@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>nanobem Toolbox</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_product_page.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>nanobem Toolbox</h1>
+<!--introduction-->
+<p>
+<img vspace="5" hspace="5" src="../figures/nanobem.jpg" alt=""> </p>
+<p>nanobem is a toolbox for the solution of Maxwell's equations for metallic and dielectric nanoparticles using a Galerkin boundary element method (BEM) approach. Details of the computational approach are described in</p>
+<div>
+<ul>
+<li>Hohenester, <a href="https://link.springer.com/book/10.1007/978-3-030-30504-8">Nano and Quantum Optics</a> (Springer 2020).</li>
+<li>Hohenester, Reichelt, Unger, Nanophotonic resonance modes with the nanobem toolbox, <a href="https://www.sciencedirect.com/science/article/pii/S0010465522000558">CPC 276, 108337 (2022)</a>; <a href="https://www.sciencedirect.com/science/article/pii/S0010465523002941">CPC 294, 108949 (2024)</a>.</li>
+</ul>
+</div>
+<p>When you publish results with the nanobem toolbox, please cite the CPC papers.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Short description of the toolbox</a>
+</li>
+<li>
+<a href="#4">Examples</a>
+</li>
+<li>
+<a href="#5">Copyright</a>
+</li>
+<li>
+<a href="#6">Developers</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Short description of the toolbox</h2>
+<p>The toolbox provides a number of general classes that allow setting up the nanoparticle boundaries and materials, and solving the full Maxwell's equations or the quasistatic approximation for planewave and dipole excitations. We additionally provide a contour integral method (CIM) solver for the computation of resonance modes (quasinormal modes), a solver for characteristic modes, a solver for quasistatic eigenmodes, an implementation for mesoscopic boundary conditions using Feibelman parameters, as well as simulations for stratified media using the matrix-friendly approach of Chew.</p>
+<p>Throughout the toolbox, lengths are measured in nanometers and frequencies are given in terms of the wavenumbers of light in vacuum. For instance, a photon energy of 2 eV has to be converted to a wavenumber according to</p>
+<pre class="codeinput">
+<span class="comment">%  photon energy in eV</span>
+ene = 2;
+<span class="comment">%  convert to wavelength in nm</span>
+units;
+lambda = eV2nm / ene;
+<span class="comment">%  convert wavelength to wavenumber</span>
+k0 = 2 * pi / lambda;
+</pre>
+<p>For the simulation of the full Maxwell equations, the electric field <img src="nanobem_product_page_eq17051487017086737306.png" alt="$\bf E$" style="width:10px;height:11px;"> has to be scaled by the strength of the incoming field. The magnetic field <img src="nanobem_product_page_eq16606618793962506310.png" alt="$Z{\bf H}$" style="width:21px;height:11px;"> used in the simulations is multiplied with the free-space impedance <img src="nanobem_product_page_eq01541992743032940906.png" alt="$Z$" style="width:9px;height:10px;">, such that <img src="nanobem_product_page_eq17051487017086737306.png" alt="$\bf E$" style="width:10px;height:11px;">, <img src="nanobem_product_page_eq05483981199244207121.png" alt="$\bf H$" style="width:11px;height:11px;"> have the same units. We use SI units throughout.</p>
+<p>The toolbox succeedes the MNPBEM toolbox written by the same developer. The main difference is now the use of a Galerkin scheme which makes the simulations more accurate and safely allows for the consideration of dielectric particles in the nanometer to micron range. In comparison to MNPBEM, the simulations are expected to be slower and the use of the toolbox functions is probably less flexible.</p>
+<h2 id="4">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="nanobem_ret_start.html">Getting started</a> with the solution of the full Maxwell's equations.</li>
+<li>
+<a href="nanobem_stat_start.html">Getting started</a> with the solution of the Maxwell's equations using the quasistatic approximation.</li>
+<li>Collection of nanobem <a href="nanobem_examples.html">examples</a>.</li>
+</ul>
+</div>
+<h2 id="5">Copyright</h2>
+<p>The nanobem toolbox is distributed under the terms of the GNU General Public License. See the file COPYING in the main directory for license details.</p>
+<h2 id="6">Developers</h2>
+<p>
+<a href="https://orcid.org/0000-0001-8929-2086">Ulrich Hohenester</a>
+</p>
+<p>Copyright 2022-2025 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% nanobem Toolbox
+%
+% <<../figures/nanobem.jpg>>
+%
+% nanobem is a toolbox for the solution of Maxwell's equations for metallic
+% and dielectric nanoparticles using a Galerkin boundary element method
+% (BEM) approach. Details of the computational approach are described in
+%
+% * Hohenester, <https://link.springer.com/book/10.1007/978-3-030-30504-8
+% Nano and Quantum Optics> (Springer 2020).
+% * Hohenester, Reichelt, Unger, Nanophotonic resonance modes with the
+% nanobem toolbox,
+% <https://www.sciencedirect.com/science/article/pii/S0010465522000558 CPC
+% 276, 108337 (2022)>;
+% <https://www.sciencedirect.com/science/article/pii/S0010465523002941 CPC
+% 294, 108949 (2024)>.
+%
+% When you publish results with the nanobem toolbox, please cite the CPC
+% papers.
+%
+%% Short description of the toolbox
+%
+% The toolbox provides a number of general classes that allow setting up
+% the nanoparticle boundaries and materials, and solving the full Maxwell's
+% equations or the quasistatic approximation for planewave and dipole
+% excitations. We additionally provide a contour integral method (CIM)
+% solver for the computation of resonance modes (quasinormal modes), a
+% solver for characteristic modes, a solver for quasistatic eigenmodes, an
+% implementation for mesoscopic boundary conditions using Feibelman
+% parameters, as well as simulations for stratified media using the
+% matrix-friendly approach of Chew.
+%
+% Throughout the toolbox, lengths are measured in nanometers and
+% frequencies are given in terms of the wavenumbers of light in vacuum. For
+% instance, a photon energy of 2 eV has to be converted to a wavenumber
+% according to
+
+%  photon energy in eV
+ene = 2;
+%  convert to wavelength in nm
+units;
+lambda = eV2nm / ene;
+%  convert wavelength to wavenumber
+k0 = 2 * pi / lambda;
+
+%%
+% For the simulation of the full Maxwell equations, the electric field $\bf
+% E$ has to be scaled by the strength of the incoming field. The magnetic
+% field $Z{\bf H}$ used in the simulations is multiplied with the
+% free-space impedance $Z$, such that $\bf E$, $\bf H$ have the same units.
+% We use SI units throughout.
+%
+%%
+% The toolbox succeedes the MNPBEM toolbox written by the same developer.
+% The main difference is now the use of a Galerkin scheme which makes the
+% simulations more accurate and safely allows for the consideration of
+% dielectric particles in the nanometer to micron range. In comparison to
+% MNPBEM, the simulations are expected to be slower and the use of the
+% toolbox functions is probably less flexible.
+%
+%% Examples
+%
+% * <nanobem_ret_start.html Getting started> with the solution of the full
+% Maxwell's equations.
+% * <nanobem_stat_start.html Getting started> with the solution of the 
+% Maxwell's equations using the quasistatic approximation.
+% * Collection of nanobem <nanobem_examples.html examples>.
+%
+%% Copyright
+%
+% The nanobem toolbox is distributed under the terms of the GNU General
+% Public License. See the file COPYING in the main directory for license
+% details.
+%
+%% Developers
+%
+% <https://orcid.org/0000-0001-8929-2086 Ulrich Hohenester>
+%
+% Copyright 2022-2025 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

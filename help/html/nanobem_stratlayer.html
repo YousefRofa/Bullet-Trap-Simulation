@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>stratified.layerstructure</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_stratlayer.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>stratified.layerstructure</h1>
+<!--introduction-->
+<p>Base class for defining the layerstructure and for field computations.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+<li>
+<a href="#5">Grid functions</a>
+</li>
+<li>
+<a href="#10">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize layerstructure</span>
+<span class="comment">%    mat    -  material vector in ascending order</span>
+<span class="comment">%    z      -  vertical interface positions in ascending order</span>
+obj = stratified.layerstructure( mat, z );
+</pre>
+<h2 id="2">Methods</h2>
+<p>Once the layerstructure object has been initialized, the following methods are available:</p>
+<pre class="codeinput">
+<span class="comment">%  number of interfaces</span>
+obj.n
+<span class="comment">%  locate positions in layer structure</span>
+ind = indlayer( obj, pos );
+<span class="comment">%  pairwise distance to layer scaled by bounding box radius</span>
+<span class="comment">%    tau      -  boundary elememts</span>
+<span class="comment">%    pos      -  positions</span>
+<span class="comment">%    d        -  distance scaled by bounding box radius</span>
+<span class="comment">%    iz       -  layer index for closest interface</span>
+[ d, iz ] = bdist2( obj, tau1, tau2 );
+[ d, iz ] = bdist2( obj, tau1, pos2 );
+</pre>
+<p>We provide the following functions for the transfer matrix approach</p>
+<pre class="codeinput">
+<span class="comment">%  Fresnel coefficients between layers (i1,i2)</span>
+<span class="comment">%    'efield'   -  TM coefficients for electric or magnetic (default) field</span>
+[ r, t ] = fresnel( obj, k0, kpar, i1, i2, PropertyPairs );
+<span class="comment">%  propagation matrix for given layer I1</span>
+p = propagate( obj, k0, kpar, i1 )
+<span class="comment">%  reflection and transmission coefficients for entire layer structure</span>
+<span class="comment">%    'dir'    :  'up' for upgoing and 'down' for downgoing wave</span>
+[ r, t ] = rtcoeffs( obj, k0, kpar, PropertyPairs );
+<span class="comment">%  transfer matrix for given interface</span>
+m = transfer( obj, k0, kpar, i1, i2 );
+<span class="comment">%  total transfer matrix for layer structure</span>
+mtot = transfertot( obj, k0, kpar );
+</pre>
+<p>With these functions we can compute the electromagnetic fields within a layer structure through</p>
+<pre class="codeinput">
+<span class="comment">%  secondary and primary fields</span>
+<span class="comment">%    k0         -  wavenumber of light in vacuum</span>
+<span class="comment">%    kpar       -  parallel wavenumber</span>
+<span class="comment">%    z1         -  field positions</span>
+<span class="comment">%    z2         -  source position</span>
+<span class="comment">%    'primary'  -  add primary field</span>
+f = fields( obj, k0, kpar, z1, z2, PropertyPairs );
+<span class="comment">%  propagate plane wave through layer structure</span>
+<span class="comment">%    pol      -  light polarization</span>
+<span class="comment">%    dir      -  light propagation direction</span>
+<span class="comment">%    k0       -  wavenumber of light in vacuum</span>
+<span class="comment">%    pos      -  positions where fields are evaluated</span>
+<span class="comment">%   'primary' -  add primary fields ?</span>
+[ e, h ] = planewave( obj, pol, dir, k0, pos, PropertyPairs );
+<span class="comment">%  coefficients for secondary waves</span>
+<span class="comment">%    i1     -  medium index for field point</span>
+<span class="comment">%    i2     -  medium index for source point</span>
+wave = secondary( obj, k0, kpar, i1, i2 );
+</pre>
+<h2 id="5">Grid functions</h2>
+<p>The toolbox also provides a number of auxiliary functions for setting up tabulation grids for the reflected Green's functions.</p>
+<pre class="codeinput">
+<span class="comment">%  group position or position pairs into unique layer slices</span>
+pts = slice( obj, pos1 );
+pts = slice( obj, pos1, pos2 );
+<span class="comment">%  tabulation grids for position pairs</span>
+<span class="comment">%    'nr'   -  number of radial grid positons</span>
+<span class="comment">%    'nz'   -  number of vertical grid positions</span>
+y = grid( obj, pts, PropertyPairs );
+</pre>
+<p>Consider for instance a substrate and a position vector extending over both layers.</p>
+<pre class="codeinput">
+<span class="comment">%  glass-air substrate</span>
+layer = stratified.layerstructure( [ Material( 2.25, 1 ), Material( 1, 1 ) ], 0 );
+<span class="comment">%  positions</span>
+[ r, z ] = ndgrid( linspace( 0, 50, 51 ), linspace( -50, 50, 51 ) );
+pos = [ r( : ), 0 * r( : ), z( : ) ];
+<span class="comment">%  group position in unique layer slices</span>
+pts = slice( layer, pos )
+</pre>
+<pre>pts =</pre>
+<pre>  1&times;2 struct array with fields:</pre>
+<pre>   i1
+   pos
+   ind</pre>
+<p>pts is a structure array with the layer index i1, the positions pos, and the index with respect to the calling function. Correspondingly, when slicing a position pair the positions are separated into contributions within unique layers</p>
+<pre class="codeinput">
+<span class="comment">%  group position pairs in unique layer slices</span>
+pts = slice( layer, pos, pos )
+</pre>
+<pre>pts =</pre>
+<pre>  1&times;4 struct array with fields:</pre>
+<pre>   i1
+   i2
+   pos1
+   pos2
+   ind1
+   ind2</pre>
+<p>Finally, we can pass the pts structure to the grid function in order to set up a grid that can be used for the tabulation of Green's functions.</p>
+<pre class="codeinput">
+<span class="comment">%  tabulation grids for position pairs</span>
+r = grid( layer, pts )
+</pre>
+<pre>r =</pre>
+<pre>  1&times;4 struct array with fields:</pre>
+<pre>   layer
+   i1
+   i2
+   r
+   z1
+   z2</pre>
+<h2 id="10">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demostratlayer01')">demostratlayer01.m</a> <tt>-</tt> Primary and secondary fields in layerstructure.</li>
+<li>
+<a href="matlab:edit('demostratlayer02')">demostratlayer02.m</a> <tt>-</tt> Electromagnetic fields for planewave excitation in layerstructure.</li>
+</ul>
+</div>
+<p>Copyright 2023 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% stratified.layerstructure
+%
+% Base class for defining the layerstructure and for field computations.
+%
+%% Initialization
+
+%  initialize layerstructure
+%    mat    -  material vector in ascending order
+%    z      -  vertical interface positions in ascending order
+obj = stratified.layerstructure( mat, z );
+
+%% Methods
+%
+% Once the layerstructure object has been initialized, the following
+% methods are available:
+
+%  number of interfaces
+obj.n
+%  locate positions in layer structure
+ind = indlayer( obj, pos );
+%  pairwise distance to layer scaled by bounding box radius
+%    tau      -  boundary elememts
+%    pos      -  positions
+%    d        -  distance scaled by bounding box radius
+%    iz       -  layer index for closest interface
+[ d, iz ] = bdist2( obj, tau1, tau2 );
+[ d, iz ] = bdist2( obj, tau1, pos2 );
+
+%%
+% We provide the following functions for the transfer matrix approach 
+
+%  Fresnel coefficients between layers (i1,i2)
+%    'efield'   -  TM coefficients for electric or magnetic (default) field
+[ r, t ] = fresnel( obj, k0, kpar, i1, i2, PropertyPairs );
+%  propagation matrix for given layer I1
+p = propagate( obj, k0, kpar, i1 )
+%  reflection and transmission coefficients for entire layer structure
+%    'dir'    :  'up' for upgoing and 'down' for downgoing wave
+[ r, t ] = rtcoeffs( obj, k0, kpar, PropertyPairs );
+%  transfer matrix for given interface
+m = transfer( obj, k0, kpar, i1, i2 );
+%  total transfer matrix for layer structure
+mtot = transfertot( obj, k0, kpar );
+
+%%
+% With these functions we can compute the electromagnetic fields within a
+% layer structure through
+
+%  secondary and primary fields 
+%    k0         -  wavenumber of light in vacuum
+%    kpar       -  parallel wavenumber
+%    z1         -  field positions
+%    z2         -  source position
+%    'primary'  -  add primary field
+f = fields( obj, k0, kpar, z1, z2, PropertyPairs );
+%  propagate plane wave through layer structure
+%    pol      -  light polarization
+%    dir      -  light propagation direction
+%    k0       -  wavenumber of light in vacuum
+%    pos      -  positions where fields are evaluated
+%   'primary' -  add primary fields ?
+[ e, h ] = planewave( obj, pol, dir, k0, pos, PropertyPairs );
+%  coefficients for secondary waves
+%    i1     -  medium index for field point
+%    i2     -  medium index for source point
+wave = secondary( obj, k0, kpar, i1, i2 );
+
+%% Grid functions
+%
+% The toolbox also provides a number of auxiliary functions for setting up
+% tabulation grids for the reflected Green's functions. 
+
+%  group position or position pairs into unique layer slices
+pts = slice( obj, pos1 );
+pts = slice( obj, pos1, pos2 );
+%  tabulation grids for position pairs
+%    'nr'   -  number of radial grid positons
+%    'nz'   -  number of vertical grid positions
+y = grid( obj, pts, PropertyPairs );
+
+%%
+% Consider for instance a substrate and a position vector extending over
+% both layers.
+
+%  glass-air substrate
+layer = stratified.layerstructure( [ Material( 2.25, 1 ), Material( 1, 1 ) ], 0 ); 
+%  positions
+[ r, z ] = ndgrid( linspace( 0, 50, 51 ), linspace( -50, 50, 51 ) );
+pos = [ r( : ), 0 * r( : ), z( : ) ];
+%  group position in unique layer slices
+pts = slice( layer, pos )
+
+%%
+%  pts = 
+% 
+%    1×2 struct array with fields:
+% 
+%     i1
+%     pos
+%     ind
+%
+% pts is a structure array with the layer index i1, the positions pos, and
+% the index with respect to the calling function. Correspondingly, when
+% slicing a position pair the positions are separated into 
+% contributions within unique layers
+
+%  group position pairs in unique layer slices
+pts = slice( layer, pos, pos )
+
+%%
+%  pts = 
+% 
+%    1×4 struct array with fields:
+% 
+%     i1
+%     i2
+%     pos1
+%     pos2
+%     ind1
+%     ind2
+%
+% Finally, we can pass the pts structure to the grid function in order to
+% set up a grid that can be used for the tabulation of Green's functions.
+
+%  tabulation grids for position pairs
+r = grid( layer, pts )
+
+%%
+%  r = 
+% 
+%    1×4 struct array with fields:
+% 
+%     layer
+%     i1
+%     i2
+%     r
+%     z1
+%     z2
+%
+%% Examples
+%
+% * <matlab:edit('demostratlayer01') demostratlayer01.m> |-| Primary and
+% secondary fields in layerstructure.
+% * <matlab:edit('demostratlayer02') demostratlayer02.m> |-|
+% Electromagnetic fields for planewave excitation in layerstructure.
+%
+% Copyright 2023 Ulrich Hohenester
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

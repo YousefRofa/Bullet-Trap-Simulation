@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Examples</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_examples.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Examples</h1>
+<!--introduction-->
+<p>In the following we list the demo files provided by the nanobem toolbox, which are used elsewhere in the help pages.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Base classes</a>
+</li>
+<li>
+<a href="#2">galerkin</a>
+</li>
+<li>
+<a href="#3">galerkinstat</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Base classes</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demomaterial01')">demomaterial01.m</a> <tt>-</tt> Materials within nanobem toolobox.</li>
+<li>
+<a href="matlab:edit('demoparticle01')">demoparticle01.m</a> <tt>-</tt> Plot elementary particle shapes.</li>
+<li>
+<a href="matlab:edit('demopoint01')">demopoint01.m</a> <tt>-</tt> Place points in environment of sphere.</li>
+<li>
+<a href="matlab:edit('demopoint02')">demopoint02.m</a> <tt>-</tt> Place points in environment of coupled spheres.</li>
+<li>
+<a href="matlab:edit('demoquad01')">demoquad01.m</a> <tt>-</tt> Quadrature rules for triangle.</li>
+<li>
+<a href="matlab:edit('demoquadduffy01')">demoquadduffy01.m</a> <tt>-</tt> Quadrature rules for identical and touching triangles.</li>
+<li>
+<a href="matlab:edit('demoquadduffy02')">demoquadduffy02.m</a> <tt>-</tt> Apply quadrature rules for Duffy integration.</li>
+</ul>
+</div>
+<h2 id="2">galerkin</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demoboundaryedge01')">demoboundaryedge01.m</a> <tt>-</tt> Plot Raviart-Thomas shape elements.</li>
+<li>
+<a href="matlab:edit('democalderon01')">democalderon01.m</a> <tt>-</tt> Calderon matrix for nanosphere.</li>
+<li>
+<a href="matlab:edit('demoretdip01')">demoretdip01.m</a> <tt>-</tt> Lifetime of dipole above nanosphere.</li>
+<li>
+<a href="matlab:edit('demoretfield01')">demoretfield01.m</a> <tt>-</tt> Electric field of optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demoretfield02')">demoretfield02.m</a> <tt>-</tt> Electric field of optically excited coupled nanospheres.</li>
+<li>
+<a href="matlab:edit('demoretspec01')">demoretspec01.m</a> <tt>-</tt> Optical spectrum for metallic nanosphere.</li>
+<li>
+<a href="matlab:edit('demoretspec02')">demoretspec02.m</a> <tt>-</tt> Optical spectra for coupled nanospheres.</li>
+</ul>
+</div>
+<p>
+<i>Simulations with resonance modes</i>
+</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('democim01')">democim01.m</a> <tt>-</tt> Resonance modes for ellipsoid and planewave excitation.</li>
+<li>
+<a href="matlab:edit('democim02')">democim02.m</a> <tt>-</tt> Resonance modes for ellipsoid and dipole excitation.</li>
+<li>
+<a href="matlab:edit('democim03')">democim03.m</a> <tt>-</tt> Resonance modes for dielectric nanosphere and nonresonant background.</li>
+<li>
+<a href="matlab:edit('demochar01')">demochar01.m</a> <tt>-</tt> Characteristic modes for optically excited ellipsoid.</li>
+</ul>
+</div>
+<p>
+<i>Simulations with Feibelman parameters</i>
+</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demofeibel01')">demofeibel01.m</a> <tt>-</tt> Optical spectra nanospheres.</li>
+<li>
+<a href="matlab:edit('demofeibel02')">demofeibel02.m</a> <tt>-</tt> Electric field of optically excited nanospheres.</li>
+<li>
+<a href="matlab:edit('demofeibel03')">demofeibel03.m</a> <tt>-</tt> Resonance modes for ellipsoid and planewave excitation.</li>
+</ul>
+</div>
+<p>
+<i>Simulations with stratified media</i>
+</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demostratlayer01')">demostratlayer01.m</a> <tt>-</tt> Primary and secondary fields in layerstructure.</li>
+<li>
+<a href="matlab:edit('demostratlayer02')">demostratlayer02.m</a> <tt>-</tt> Electromagnetic fields for planewave excitation in layerstructure.</li>
+<li>
+<a href="matlab:edit('demostratsomint01')">demostratsomint01.m</a> <tt>-</tt> Sommerfeld integration, plot integrand.</li>
+<li>
+<a href="matlab:edit('demostratsomint02')">demostratsomint02.m</a> <tt>-</tt> Sommerfeld integration, plot integrand w/o quasistatic contribution.</li>
+<li>
+<a href="matlab:edit('demostratgreen01')">demostratgreen01.m</a> <tt>-</tt> Tabulated Green function for sphere above substrate.</li>
+<li>
+<a href="matlab:edit('demostratspec01')">demostratspec01.m</a> <tt>-</tt> Spectrum for gold sphere above glass substrate.</li>
+<li>
+<a href="matlab:edit('demostratspec02')">demostratspec02.m</a> <tt>-</tt> Spectrum for gold disk on top of glass substrate.</li>
+<li>
+<a href="matlab:edit('demostratfield01')">demostratfield01.m</a> <tt>-</tt> Electric field for optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demostratfield02')">demostratfield02.m</a> <tt>-</tt> Electric field for optically excited nanodisk.</li>
+<li>
+<a href="matlab:edit('demostratfar01')">demostratfar01.m</a> <tt>-</tt> Electric farfields for optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demostratfar02')">demostratfar02.m</a> <tt>-</tt> Scattering spectra for detector with finite NA.</li>
+<li>
+<a href="matlab:edit('demostratdip01')">demostratdip01.m</a> <tt>-</tt> Decay rate for dipole and gold sphere above substrate.</li>
+<li>
+<a href="matlab:edit('demostratdip02')">demostratdip02.m</a> <tt>-</tt> LDOS enhancement for gold sphere above substrate.</li>
+</ul>
+</div>
+<p>
+<i>Simulations with multipole expansion</i>
+</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demomulti01')">demomulti01.m</a> <tt>-</tt> T-matrix for dielectric nanosphere and single wavelength.</li>
+<li>
+<a href="matlab:edit('demomulti02')">demomulti02.m</a> <tt>-</tt> T-matrices for TiO2 nanodisk and multiple wavelengths.</li>
+</ul>
+</div>
+<h2 id="3">galerkinstat</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demoboundaryvert01')">demoboundaryvert01.m</a> <tt>-</tt> Plot linear shape elements.</li>
+<li>
+<a href="matlab:edit('demostatdip01')">demostatdip01.m</a> <tt>-</tt> Lifetime of dipole above nanosphere.</li>
+<li>
+<a href="matlab:edit('demostatfield01')">demostatfield01.m</a> <tt>-</tt> Electric field of optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demostatfield02')">demostatfield02.m</a> <tt>-</tt> Electric field of optically excited coupled nanospheres.</li>
+<li>
+<a href="matlab:edit('demostatspec01')">demostatspec01.m</a> <tt>-</tt> Optical spectrum for metallic nanosphere.</li>
+<li>
+<a href="matlab:edit('demostatspec02')">demostatspec02.m</a> <tt>-</tt> Optical spectra for coupled nanospheres.</li>
+</ul>
+</div>
+<p>
+<i>Simulations with quasistatic eigenmodes</i>
+</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demostateig01')">demostateig01.m</a> <tt>-</tt> Quasistatic eigenmodes for nanosphere.</li>
+<li>
+<a href="matlab:edit('demostateig02')">demostateig02.m</a> <tt>-</tt> Quasistatic eigenmodes for nanoellipsoid.</li>
+<li>
+<a href="matlab:edit('demostateig03')">demostateig03.m</a> <tt>-</tt> Quasistatic eigenmodes for nanocube.</li>
+</ul>
+</div>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Examples
+%
+% In the following we list the demo files provided by the nanobem toolbox,
+% which are used elsewhere in the help pages.
+%
+%% Base classes
+%
+% * <matlab:edit('demomaterial01') demomaterial01.m> |-| Materials within nanobem toolobox.
+% * <matlab:edit('demoparticle01') demoparticle01.m> |-| Plot elementary particle shapes.
+% * <matlab:edit('demopoint01') demopoint01.m> |-| Place points in environment of sphere.
+% * <matlab:edit('demopoint02') demopoint02.m> |-| Place points in environment of coupled spheres.
+% * <matlab:edit('demoquad01') demoquad01.m> |-| Quadrature rules for triangle.
+% * <matlab:edit('demoquadduffy01') demoquadduffy01.m> |-| Quadrature rules for identical and touching triangles.
+% * <matlab:edit('demoquadduffy02') demoquadduffy02.m> |-| Apply quadrature rules for Duffy integration.
+%
+%% galerkin
+%
+% * <matlab:edit('demoboundaryedge01') demoboundaryedge01.m> |-| Plot Raviart-Thomas shape elements.
+% * <matlab:edit('democalderon01') democalderon01.m> |-| Calderon matrix for nanosphere.
+% * <matlab:edit('demoretdip01') demoretdip01.m> |-| Lifetime of dipole above nanosphere.
+% * <matlab:edit('demoretfield01') demoretfield01.m> |-| Electric field of optically excited nanosphere.
+% * <matlab:edit('demoretfield02') demoretfield02.m> |-| Electric field of optically excited coupled nanospheres.
+% * <matlab:edit('demoretspec01') demoretspec01.m> |-| Optical spectrum for metallic nanosphere.
+% * <matlab:edit('demoretspec02') demoretspec02.m> |-| Optical spectra for coupled nanospheres.
+%
+% _Simulations with resonance modes_
+%
+% * <matlab:edit('democim01') democim01.m> |-| Resonance modes for ellipsoid and planewave excitation.
+% * <matlab:edit('democim02') democim02.m> |-| Resonance modes for ellipsoid and dipole excitation.
+% * <matlab:edit('democim03') democim03.m> |-| Resonance modes for dielectric nanosphere and nonresonant background.
+% * <matlab:edit('demochar01') demochar01.m> |-| Characteristic modes for optically excited ellipsoid.
+%
+% _Simulations with Feibelman parameters_
+%
+% * <matlab:edit('demofeibel01') demofeibel01.m> |-| Optical spectra nanospheres.
+% * <matlab:edit('demofeibel02') demofeibel02.m> |-| Electric field of optically excited nanospheres.
+% * <matlab:edit('demofeibel03') demofeibel03.m> |-| Resonance modes for ellipsoid and planewave excitation.
+%
+% _Simulations with stratified media_
+%
+% * <matlab:edit('demostratlayer01') demostratlayer01.m> |-| Primary and secondary fields in layerstructure.
+% * <matlab:edit('demostratlayer02') demostratlayer02.m> |-| Electromagnetic fields for planewave excitation in layerstructure.
+% * <matlab:edit('demostratsomint01') demostratsomint01.m> |-| Sommerfeld integration, plot integrand.
+% * <matlab:edit('demostratsomint02') demostratsomint02.m> |-| Sommerfeld integration, plot integrand w/o quasistatic contribution.
+% * <matlab:edit('demostratgreen01') demostratgreen01.m> |-| Tabulated Green function for sphere above substrate.
+% * <matlab:edit('demostratspec01') demostratspec01.m> |-| Spectrum for gold sphere above glass substrate.
+% * <matlab:edit('demostratspec02') demostratspec02.m> |-| Spectrum for gold disk on top of glass substrate.
+% * <matlab:edit('demostratfield01') demostratfield01.m> |-| Electric field for optically excited nanosphere.
+% * <matlab:edit('demostratfield02') demostratfield02.m> |-| Electric field for optically excited nanodisk.
+% * <matlab:edit('demostratfar01') demostratfar01.m> |-| Electric farfields for optically excited nanosphere.
+% * <matlab:edit('demostratfar02') demostratfar02.m> |-| Scattering spectra for detector with finite NA.
+% * <matlab:edit('demostratdip01') demostratdip01.m> |-| Decay rate for dipole and gold sphere above substrate.
+% * <matlab:edit('demostratdip02') demostratdip02.m> |-| LDOS enhancement for gold sphere above substrate.
+%
+% _Simulations with multipole expansion_
+%
+% * <matlab:edit('demomulti01') demomulti01.m> |-| T-matrix for dielectric nanosphere and single wavelength.
+% * <matlab:edit('demomulti02') demomulti02.m> |-| T-matrices for TiO2 nanodisk and multiple wavelengths.
+%
+%% galerkinstat
+%
+% * <matlab:edit('demoboundaryvert01') demoboundaryvert01.m> |-| Plot linear shape elements.
+% * <matlab:edit('demostatdip01') demostatdip01.m> |-| Lifetime of dipole above nanosphere.
+% * <matlab:edit('demostatfield01') demostatfield01.m> |-| Electric field of optically excited nanosphere.
+% * <matlab:edit('demostatfield02') demostatfield02.m> |-| Electric field of optically excited coupled nanospheres.
+% * <matlab:edit('demostatspec01') demostatspec01.m> |-| Optical spectrum for metallic nanosphere.
+% * <matlab:edit('demostatspec02') demostatspec02.m> |-| Optical spectra for coupled nanospheres.
+%
+% _Simulations with quasistatic eigenmodes_
+%
+% * <matlab:edit('demostateig01') demostateig01.m> |-| Quasistatic eigenmodes for nanosphere.
+% * <matlab:edit('demostateig02') demostateig02.m> |-| Quasistatic eigenmodes for nanoellipsoid.
+% * <matlab:edit('demostateig03') demostateig03.m> |-| Quasistatic eigenmodes for nanocube.
+%
+% Copyright 2022 Ulrich Hohenester
+##### SOURCE END #####
+-->
+</body>
+</html>

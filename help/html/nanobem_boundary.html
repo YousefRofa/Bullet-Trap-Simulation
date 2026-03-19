@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>BoundaryElement</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_boundary.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>BoundaryElement</h1>
+<!--introduction-->
+<p>BoundaryElement is a base class of the nanobem toolbox that stores the discretized boundary elements <img src="nanobem_boundary_eq11512847349750384447.png" alt="$\tau_i$" style="width:21px;height:23px;"></p>
+<p>
+<img src="nanobem_boundary_eq00106220259526102282.png" alt="$$ \partial\Omega=\bigcup_i\tau_i $$" style="width:161px;height:76px;"></p>
+<p>See Hohenester, Nano and Quantum Optics (Springer 2020), chapter 11. For use within BEM, these boundary elements have to be supplemented with shape functions.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Properties</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#4">Example</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  set up array of boundary elements</span>
+<span class="comment">%    mat    -  array of material objects</span>
+<span class="comment">%    p      -  discretized particle boundary</span>
+<span class="comment">%    inout  -  index to material inside and outside</span>
+obj = BoundaryElement( mat, p1, inout1, p2, inout2, etc );
+</pre>
+<h2 id="2">Properties</h2>
+<pre class="codeinput">obj.inout     <span class="comment">%  material index at inside and outside</span>
+obj.verts     <span class="comment">%  face vertices</span>
+
+obj.mat       <span class="comment">%  vector of material objects</span>
+obj.pos       <span class="comment">%  centroid position</span>
+obj.nvec      <span class="comment">%  normal vector</span>
+obj.area      <span class="comment">%  area</span>
+obj.nedges    <span class="comment">%  number of edges</span>
+</pre>
+<h2 id="3">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  pairwise distance between boundary elements scaled by bounding box radius</span>
+<span class="comment">%    to be used for refinement of Green function elements</span>
+d = bdist2( obj1, obj2 );
+<span class="comment">%  pairwise distance for K smallest distances</span>
+<span class="comment">%    IND is index to smallest elements</span>
+[ d, ind ] = bdist2( obj1, obj2, k );
+<span class="comment">%  bounding box radius</span>
+rad = boxradius( obj );
+<span class="comment">%  index to boundary elements which are closest to given positon</span>
+<span class="comment">%    IMAT is index of embedding medium</span>
+[ ind, imat ] = nearest( obj, pos );
+<span class="comment">%  slice into bunches of equal shape and material parameters</span>
+tau = slice( obj );
+<span class="comment">%  touching boundary elements, N is number of common vertices</span>
+n = touching( obj1, obj2 );
+<span class="comment">%  vertices of boundary elements, must have same number of edges</span>
+verts = vertices( obj );
+</pre>
+<h2 id="4">Example</h2>
+<pre class="codeinput">
+<span class="comment">%  material array, water and gold</span>
+mat1 = Material( 1.33 ^ 2, 1 );
+mat2 = Material( epstable( <span class="string">'gold.dat'</span> ), 1 );
+<span class="comment">%  array of material objects</span>
+mat = [ mat1, mat2 ];
+<span class="comment">%  nanosphere with 10 nm diameter</span>
+p = trisphere( 144, 10 );
+<span class="comment">%  convert to array of boundary elements</span>
+tau = BoundaryElement( mat, p, [ 2, 1 ] );
+</pre>
+<pre>tau =</pre>
+<pre>1�284 BoundaryElement array with properties:</pre>
+<pre>   inout
+   verts</pre>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% BoundaryElement
+%
+% BoundaryElement is a base class of the nanobem toolbox that stores the
+% discretized boundary elements $\tau_i$
+%
+% $$ \partial\Omega=\bigcup_i\tau_i $$
+%
+% See Hohenester, Nano and Quantum Optics (Springer 2020), chapter 11. For
+% use within BEM, these boundary elements have to be supplemented with
+% shape functions.
+%
+%% Initialization
+
+%  set up array of boundary elements
+%    mat    -  array of material objects
+%    p      -  discretized particle boundary
+%    inout  -  index to material inside and outside
+obj = BoundaryElement( mat, p1, inout1, p2, inout2, etc );
+
+%% Properties
+
+obj.inout     %  material index at inside and outside
+obj.verts     %  face vertices
+
+obj.mat       %  vector of material objects
+obj.pos       %  centroid position
+obj.nvec      %  normal vector
+obj.area      %  area
+obj.nedges    %  number of edges
+
+%% Methods
+
+%  pairwise distance between boundary elements scaled by bounding box radius
+%    to be used for refinement of Green function elements
+d = bdist2( obj1, obj2 );
+%  pairwise distance for K smallest distances
+%    IND is index to smallest elements
+[ d, ind ] = bdist2( obj1, obj2, k );
+%  bounding box radius 
+rad = boxradius( obj );
+%  index to boundary elements which are closest to given positon
+%    IMAT is index of embedding medium
+[ ind, imat ] = nearest( obj, pos );
+%  slice into bunches of equal shape and material parameters
+tau = slice( obj );
+%  touching boundary elements, N is number of common vertices
+n = touching( obj1, obj2 );
+%  vertices of boundary elements, must have same number of edges
+verts = vertices( obj );
+
+%% Example
+
+%  material array, water and gold
+mat1 = Material( 1.33 ^ 2, 1 );
+mat2 = Material( epstable( 'gold.dat' ), 1 );
+%  array of material objects
+mat = [ mat1, mat2 ];
+%  nanosphere with 10 nm diameter
+p = trisphere( 144, 10 );
+%  convert to array of boundary elements
+tau = BoundaryElement( mat, p, [ 2, 1 ] );
+
+%%
+%  tau = 
+%
+%  1�284 BoundaryElement array with properties:
+%
+%     inout
+%     verts
+%
+%%
+% Copyright 2022 Ulrich Hohenester
+##### SOURCE END #####
+-->
+</body>
+</html>

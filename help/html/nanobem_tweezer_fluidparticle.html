@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>tweezer.fluidparticle</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_tweezer_fluidparticle.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tweezer.fluidparticle</h1>
+<!--introduction-->
+<p>
+<i>tweezer.fluidarticle</i> accounts for the Stokes drag and diffusion of particles without any special symmetry in a fluid. For the initialization we need the drag tensors for translation, rotation, and their coupling, as computed e.g. with the <i>optics.stokesdrag</i> function.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize Stokes drag and diffusion for particle in fluid</span>
+<span class="comment">%     drag      -  drag tensor with components 'tt', 'tr', 'rt', 'tt'</span>
+<span class="comment">%     vel       -  velocity of fluid in z-direction</span>
+fluid = tweezer.fluidartucle( drag, vel );
+<span class="comment">%  modify default values for viscosity and temperature</span>
+fluid.eta = eta;      <span class="comment">%  default viscosity is 9.544e-4 Pa&times;s</span>
+fluid.temp = temp;    <span class="comment">%  default temperature is 293 K</span>
+</pre>
+<h2 id="2">Methods</h2>
+<p>Once the <i>tweezer.fluidparticle</i> object is initialized, one can use the following methods</p>
+<pre class="codeinput">
+<span class="comment">%  drift velocity for given force and torque</span>
+<span class="comment">%    rot      -  rotation matrix for particle</span>
+<span class="comment">%    ftot     -  total force acting on nanoparticle (pN)</span>
+<span class="comment">%    ntot     -  total torque acting on particle (pN&times;nm)</span>
+<span class="comment">%    vel      -  drift velocity (nm/s)</span>
+<span class="comment">%    omega    -  angular velocity</span>
+[ vel, omega ] = drift( fluid, rot, ftot, ntot );
+
+<span class="comment">%  propagate particle in time using drift and diffusion</span>
+<span class="comment">%    pos      -  initial positions of particle</span>
+<span class="comment">%    rot      -  initial rotation matrix for particle</span>
+<span class="comment">%    ftot     -  total force acting on particle (pN)</span>
+<span class="comment">%    ntot     -  total torque acting on particle (pN&times;nm)</span>
+<span class="comment">%    dt       -  time increment</span>
+[ pos, rot ] = browniant( fluid, pos, rot, ftot, ntot, dt );
+
+<span class="comment">%  propagate particle in space using drift and diffusion</span>
+<span class="comment">%    pos      -  initial positions of particle</span>
+<span class="comment">%    rot      -  initial rotation matrix for particle</span>
+<span class="comment">%    ftot     -  total force acting on particle (pN)</span>
+<span class="comment">%    ntot     -  total torque acting on particle (pN&times;nm)</span>
+<span class="comment">%    dz       -  space increment</span>
+<span class="comment">%    dt       -  time increment</span>
+[ pos, rot, dt ] = brownianz( fluid, pos, rot, ftot, ntot, dz );
+</pre>
+<p>Copyright 2025 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% tweezer.fluidparticle
+%
+% _tweezer.fluidarticle_ accounts for the Stokes drag and diffusion of
+% particles without any special symmetry in a fluid. For the initialization
+% we need the drag tensors for translation, rotation, and their coupling,
+% as computed e.g. with the _optics.stokesdrag_ function.
+%
+%% Initialization
+
+%  initialize Stokes drag and diffusion for particle in fluid
+%     drag      -  drag tensor with components 'tt', 'tr', 'rt', 'tt'
+%     vel       -  velocity of fluid in z-direction
+fluid = tweezer.fluidartucle( drag, vel );
+%  modify default values for viscosity and temperature
+fluid.eta = eta;      %  default viscosity is 9.544e-4 Pa×s
+fluid.temp = temp;    %  default temperature is 293 K
+
+%% Methods
+%
+% Once the _tweezer.fluidparticle_ object is initialized, one can use the
+% following methods
+
+%  drift velocity for given force and torque
+%    rot      -  rotation matrix for particle
+%    ftot     -  total force acting on nanoparticle (pN)
+%    ntot     -  total torque acting on particle (pN×nm)
+%    vel      -  drift velocity (nm/s)
+%    omega    -  angular velocity
+[ vel, omega ] = drift( fluid, rot, ftot, ntot );
+
+%  propagate particle in time using drift and diffusion
+%    pos      -  initial positions of particle
+%    rot      -  initial rotation matrix for particle
+%    ftot     -  total force acting on particle (pN)
+%    ntot     -  total torque acting on particle (pN×nm)
+%    dt       -  time increment
+[ pos, rot ] = browniant( fluid, pos, rot, ftot, ntot, dt );
+
+%  propagate particle in space using drift and diffusion
+%    pos      -  initial positions of particle
+%    rot      -  initial rotation matrix for particle
+%    ftot     -  total force acting on particle (pN)
+%    ntot     -  total torque acting on particle (pN×nm)
+%    dz       -  space increment
+%    dt       -  time increment
+[ pos, rot, dt ] = brownianz( fluid, pos, rot, ftot, ntot, dz );
+
+%%
+% Copyright 2025 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

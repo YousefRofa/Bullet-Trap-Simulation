@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>tensor</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_tensor.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tensor</h1>
+<!--introduction-->
+<p>The nanobem toolbox has a relatively simple internal tensor class for the manipulation of multidimensional arrays of the form</p>
+<p>
+<img src="nanobem_tensor_eq13595691682752863719.png" alt="$$ x_iy_j\,,\quad A_{ijk}B_{jk}\,,\quad \sum_i A_{ijk}\,,\dots  $$" style="width:165px;height:31px;"></p>
+<p>The tensor class does not use Einstein's sum convention. Tensor objects should be used when computer time is not a central issue, otherwise a more explicit implementation using the internal Matlab operations and functions is preferable.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#4">Methods</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  dummy indices for internal tensor class</span>
+[ i, j, k ] = deal( 1, 2, 3 );
+<span class="comment">%  allocate array for internal tensor class</span>
+a = zeros( 3, 5, 4 );
+<span class="comment">%  initialize tensor</span>
+a = tensor( a, [ i, j, k ] );
+</pre>
+<p>For the dummy indices it is important to use unique identifiers. Once the tensors are initialized, they can be manipulated in a simple and intuitive fashion. Internally, the sizes of the tensors are not checked and it is assumed that the user declares them properly.</p>
+<pre class="codeinput">
+<span class="comment">%  define second tensor</span>
+b = zeros( 5, 4 );
+b = tensor( b, [ j, k ] );
+<span class="comment">%  multiplication of tensors</span>
+c = a * b
+</pre>
+<pre>c =</pre>
+<pre>tensor with properties:</pre>
+<pre>  val: [20�3 double]
+  siz: [5 4 3]
+  idx: [2 3 1]</pre>
+<pre class="codeinput">
+<span class="comment">%  sum over index I</span>
+c = sum( a * b, i );
+<span class="comment">%  convert to numeric array c( j, k )</span>
+c = double( c, [ j, k ] );
+</pre>
+<h2 id="4">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  cross product along dimension K</span>
+cross( a, b, k );
+<span class="comment">%  dot product along dimension K, w/o complex conjugation</span>
+dot( a, b, k );
+<span class="comment">%  convert to numeric a( indices )</span>
+double( a, indices );
+<span class="comment">%  add tensors</span>
+a + b;
+<span class="comment">%  subtraction</span>
+a - b;
+<span class="comment">%  unary minus</span>
+- a;
+<span class="comment">%  division</span>
+a ./ b;
+<span class="comment">%  power with scalar N</span>
+a .^ n;
+<span class="comment">%  summation along dimension K</span>
+sum( a, k );
+</pre>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% tensor
+%
+% The nanobem toolbox has a relatively simple internal tensor class for the
+% manipulation of multidimensional arrays of the form
+%
+% $$ x_iy_j\,,\quad A_{ijk}B_{jk}\,,\quad \sum_i A_{ijk}\,,\dots  $$
+%
+% The tensor class does not use Einstein's sum convention. Tensor objects
+% should be used when computer time is not a central issue, otherwise a
+% more explicit implementation using the internal Matlab operations and
+% functions is preferable.
+%
+%% Initialization
+
+%  dummy indices for internal tensor class
+[ i, j, k ] = deal( 1, 2, 3 );
+%  allocate array for internal tensor class
+a = zeros( 3, 5, 4 );
+%  initialize tensor
+a = tensor( a, [ i, j, k ] );
+
+%%
+% For the dummy indices it is important to use unique identifiers. Once the
+% tensors are initialized, they can be manipulated in a simple and
+% intuitive fashion. Internally, the sizes of the tensors are not checked
+% and it is assumed that the user declares them properly.
+
+%  define second tensor
+b = zeros( 5, 4 );
+b = tensor( b, [ j, k ] );
+%  multiplication of tensors
+c = a * b
+
+%%
+%  c = 
+%
+%  tensor with properties:
+%
+%    val: [20�3 double]
+%    siz: [5 4 3]
+%    idx: [2 3 1]
+
+%  sum over index I
+c = sum( a * b, i );
+%  convert to numeric array c( j, k )
+c = double( c, [ j, k ] );
+
+%% Methods
+
+%  cross product along dimension K
+cross( a, b, k );
+%  dot product along dimension K, w/o complex conjugation
+dot( a, b, k );
+%  convert to numeric a( indices )
+double( a, indices );
+%  add tensors
+a + b;
+%  subtraction
+a - b;
+%  unary minus
+- a;
+%  division
+a ./ b;
+%  power with scalar N
+a .^ n;
+%  summation along dimension K
+sum( a, k );
+
+%%
+%
+% Copyright 2022 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>optics.lensimage2</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_opt_lensimage2.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>optics.lensimage2</h1>
+<!--introduction-->
+<p>Same as <i>optics.lensimage</i> but using FFT. In the FFT implementation the image coordinates cannot be chosen independently but are returned by the field functions. Note the different calling sequences in <i>optics.lensimage/efield</i> and <i>optics.lensimage2/efield</i>.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#5">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize lens system for imaging</span>
+<span class="comment">%     mat1       -  material properties on object side</span>
+<span class="comment">%     mat2       -  material properties on image  side</span>
+<span class="comment">%     k0         -  wavenumber of light in vacuum</span>
+<span class="comment">%     NA         -  numerical aperture</span>
+<span class="comment">%    'rot'       -  rotation matrix for optical axis</span>
+<span class="comment">%    'backfocal' -  field manipulation in backfocal plane</span>
+<span class="comment">%    'n'         -  number of wavenumbers per dimension</span>
+lens = optics.lensimage2( mat1, mat2, k0, NA, PropertyPairs );
+</pre>
+<p>rot is an optional rotation matrix that allows rotating the optical axis from the +z-direction into other directions. backfocal is a user-defined function that can be used to manipulate the electromagnetic fields in the backfocal plane, for instance to mimic the effect of a quarter-wave plate.</p>
+<h2 id="3">Methods</h2>
+<p>Suppose that we have the solution sol of a BEM simulation for a particle at hand, which is either of type <i>galerkin.solution</i> for a homogeneous medium or stratified.solution for a stratified medium. To image the light scattered by the particle, we have to compute the farfields in the direction of the lens object and submit them to the Richards-Wolf approach.</p>
+<pre class="codeinput">
+<span class="comment">%  imaging of farfields</span>
+<span class="comment">%    sol      -  BEM solution for homogeneous or stratified medium</span>
+<span class="comment">%    focus    -  shift focus position wrt origin of BEM simulation</span>
+<span class="comment">%    n        -  size of output array, determines image resolution</span>
+<span class="comment">%    x        -  image coordinates w/o magnification</span>
+far = farfields( sol, lens.dir );  <span class="comment">%  compute farfields in directions lens.dir</span>
+plot( lens, far );                 <span class="comment">%  plot farfields on Gaussian reference sphere</span>
+[ isca, x ] = efield( lens, far, <span class="string">'focus'</span>, focus, <span class="string">'n'</span>, n );
+</pre>
+<p>Similarly, the fields of a planewave object ref, which is of type <i>optics.decompose</i>, can be imaged through</p>
+<pre class="codeinput">
+<span class="comment">%  imaging of planewave decomposition</span>
+[ iref, x ] = efield( lens, ref, <span class="string">'focus'</span>, focus, <span class="string">'n'</span>, n );
+</pre>
+<h2 id="5">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demooptics02')">demooptics02.m</a> <tt>-</tt> Imaging of point dipoles using optics.lensimage.</li>
+<li>
+<a href="matlab:edit('demooptics04')">demooptics04.m</a> <tt>-</tt> Imaging of point dipoles using optics.lensimage2.</li>
+</ul>
+</div>
+<p>Copyright 2024 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% optics.lensimage2
+%
+% Same as _optics.lensimage_ but using FFT. In the FFT implementation the
+% image coordinates cannot be chosen independently but are returned by the
+% field functions.  Note the different calling sequences in
+% _optics.lensimage/efield_ and _optics.lensimage2/efield_.
+%
+%% Initialization
+
+%  initialize lens system for imaging
+%     mat1       -  material properties on object side
+%     mat2       -  material properties on image  side
+%     k0         -  wavenumber of light in vacuum
+%     NA         -  numerical aperture
+%    'rot'       -  rotation matrix for optical axis
+%    'backfocal' -  field manipulation in backfocal plane
+%    'n'         -  number of wavenumbers per dimension
+lens = optics.lensimage2( mat1, mat2, k0, NA, PropertyPairs );
+
+%%
+% rot is an optional rotation matrix that allows rotating the optical axis
+% from the +z-direction into other directions. backfocal is a user-defined
+% function that can be used to manipulate the electromagnetic fields in the
+% backfocal plane, for instance to mimic the effect of a quarter-wave
+% plate.
+%
+%% Methods
+%
+% Suppose that we have the solution sol of a BEM simulation for a particle
+% at hand, which is either of type _galerkin.solution_ for a homogeneous
+% medium or stratified.solution for a stratified medium. To image the
+% light scattered by the particle, we have to compute the farfields in the
+% direction of the lens object and submit them to the Richards-Wolf
+% approach.
+
+%  imaging of farfields
+%    sol      -  BEM solution for homogeneous or stratified medium
+%    focus    -  shift focus position wrt origin of BEM simulation
+%    n        -  size of output array, determines image resolution
+%    x        -  image coordinates w/o magnification
+far = farfields( sol, lens.dir );  %  compute farfields in directions lens.dir
+plot( lens, far );                 %  plot farfields on Gaussian reference sphere
+[ isca, x ] = efield( lens, far, 'focus', focus, 'n', n );  
+
+%%
+% Similarly, the fields of a planewave object ref, which is of type
+% _optics.decompose_, can be imaged through
+
+%  imaging of planewave decomposition
+[ iref, x ] = efield( lens, ref, 'focus', focus, 'n', n ); 
+
+%% Examples
+%
+% * <matlab:edit('demooptics02') demooptics02.m> |-| Imaging of point dipoles using optics.lensimage.
+% * <matlab:edit('demooptics04') demooptics04.m> |-| Imaging of point dipoles using optics.lensimage2.
+%
+%%
+%
+% Copyright 2024 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

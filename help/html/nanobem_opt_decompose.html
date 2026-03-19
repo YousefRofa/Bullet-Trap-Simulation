@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>optics.decompose</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_opt_decompose.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>optics.decompose</h1>
+<!--introduction-->
+<p>optics.decompose is a planewave decomposition for incoming fields. It differs from the <i>galerkin.planewave</i> object in that it contains a single field composed of multiple planewave components,</p>
+<p>
+<img src="nanobem_opt_decompose_eq15253864838922531838.png" alt="$$ {\bf E}({\bf r})=\sum_i \exp(i{\bf k}_i\cdot{\bf r})\epsilon_i \,. $$" style="width:145px;height:31px;"></p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+<li>
+<a href="#6">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%   initialize planewave decomposition</span>
+<span class="comment">%      k0      -  wavenumber of light in vacuum</span>
+<span class="comment">%      efield  -  electric field components</span>
+<span class="comment">%      dir     -  propagation directions</span>
+field = optics.decompose( k0, efield, dir );
+</pre>
+<h2 id="2">Methods</h2>
+<pre class="codeinput">
+<span class="comment">% evaluate fields at given positions</span>
+<span class="comment">%   tau       -  discretized particle boundary</span>
+<span class="comment">%   pos       -  requested positions for fields</span>
+pts = Point( tau, pos );          <span class="comment">%  place position(s) in photonic environment</span>
+[ e, h ] = fields( field, pts );  <span class="comment">%  evaluate planewave decomposition</span>
+<span class="comment">% evaluate fields in stratified medium at given positions</span>
+<span class="comment">%    layer    -  layer structure</span>
+pts = stratified.Point( layer, tau, pos );
+[ e, h ] = fields( field, pts, <span class="string">'layer'</span>, layer );
+<span class="comment">%  secondary fields reflected or transmitted at stratified medium</span>
+<span class="comment">%    dir      -  'up' for upgoing and 'down' for downgoing waves</span>
+field2 = secondary( fields, layer, <span class="string">'dir'</span>, dir );
+<span class="comment">%  inhomogeneities for use in BEM solvers</span>
+qinc = eval( field, tau );                   <span class="comment">%  homogeneous embedding medium</span>
+qinc = eval( field, tau, <span class="string">'layer'</span>, layer );   <span class="comment">%  particle in stratified medium</span>
+</pre>
+<p>To rotate a planewave decomposition one must provide a rotation matrix, see <a href="matlab:edit('optics.rotx')">optics.rotx</a>, <a href="matlab:edit('optics.roty')">optics.roty</a> or <a href="matlab:edit('optics.rotz')">optics.rotz</a>.</p>
+<pre class="codeinput">
+<span class="comment">%  rotate planewave decomposition</span>
+<span class="comment">%    rot    -  3&times;3 rotation matrix</span>
+field = rot * field;     <span class="comment">%  apply rotation matrix from lhs</span>
+field = field * rot .';  <span class="comment">%  apply rotation matrix from rhs</span>
+</pre>
+<p>To shift the planewave decomposition by a shift-vector pos, one must compute the shift-phases and multiply them to the fields.</p>
+<pre class="codeinput">shift = exp( - 1i * k * field.dir * pos .' );   <span class="comment">%  shift phases</span>
+field = field .* shift;                         <span class="comment">%  multiply fields with shift phases</span>
+</pre>
+<p>Alternatively, one can use the transform function</p>
+<pre class="codeinput">
+<span class="comment">%  rotate and shift planewave decomposition</span>
+<span class="comment">%    rot    -  3&times;3 rotation matrix</span>
+<span class="comment">%    pos    -  shift position</span>
+<span class="comment">%    mat    -  material properties for medium where field propagates</span>
+field = transform( field, <span class="string">'rot'</span>, rot );
+field = transform( obj, <span class="string">'shift'</span>, pos, <span class="string">'mat'</span>, mat );
+</pre>
+<h2 id="6">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demooptics01')">demooptics01.m</a> <tt>-</tt> Focusing of incoming fields.</li>
+<li>
+<a href="matlab:edit('demoiscat01')">demoiscat01.m</a> <tt>-</tt> iSCAT images for various nanoparticles.</li>
+<li>
+<a href="matlab:edit('demoiscat02')">demoiscat02.m</a> <tt>-</tt> iSCAT images for gold nanosphere and varying focus planes.</li>
+</ul>
+</div>
+<p>Copyright 2024 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% optics.decompose
+%
+% optics.decompose is a planewave decomposition for incoming fields. It
+% differs from the _galerkin.planewave_ object in that it contains a single
+% field composed of multiple planewave components,
+%
+% $$ {\bf E}({\bf r})=\sum_i \exp(i{\bf k}_i\cdot{\bf r})\epsilon_i \,. $$
+%
+%% Initialization
+
+%   initialize planewave decomposition
+%      k0      -  wavenumber of light in vacuum
+%      efield  -  electric field components
+%      dir     -  propagation directions
+field = optics.decompose( k0, efield, dir );
+
+%% Methods
+
+% evaluate fields at given positions
+%   tau       -  discretized particle boundary
+%   pos       -  requested positions for fields
+pts = Point( tau, pos );          %  place position(s) in photonic environment
+[ e, h ] = fields( field, pts );  %  evaluate planewave decomposition
+% evaluate fields in stratified medium at given positions
+%    layer    -  layer structure
+pts = stratified.Point( layer, tau, pos );
+[ e, h ] = fields( field, pts, 'layer', layer );
+%  secondary fields reflected or transmitted at stratified medium
+%    dir      -  'up' for upgoing and 'down' for downgoing waves
+field2 = secondary( fields, layer, 'dir', dir );
+%  inhomogeneities for use in BEM solvers
+qinc = eval( field, tau );                   %  homogeneous embedding medium
+qinc = eval( field, tau, 'layer', layer );   %  particle in stratified medium
+
+%%
+% To rotate a planewave decomposition one must provide a rotation matrix,
+% see <matlab:edit('optics.rotx') optics.rotx>, <matlab:edit('optics.roty')
+% optics.roty> or <matlab:edit('optics.rotz') optics.rotz>.
+
+%  rotate planewave decomposition
+%    rot    -  3×3 rotation matrix
+field = rot * field;     %  apply rotation matrix from lhs
+field = field * rot .';  %  apply rotation matrix from rhs
+
+%%
+% To shift the planewave decomposition by a shift-vector pos, one must
+% compute the shift-phases and multiply them to the fields.
+
+shift = exp( - 1i * k * field.dir * pos .' );   %  shift phases
+field = field .* shift;                         %  multiply fields with shift phases
+
+%%
+% Alternatively, one can use the transform function
+
+%  rotate and shift planewave decomposition
+%    rot    -  3×3 rotation matrix
+%    pos    -  shift position
+%    mat    -  material properties for medium where field propagates
+field = transform( field, 'rot', rot );
+field = transform( obj, 'shift', pos, 'mat', mat );
+
+%% Examples
+%
+% * <matlab:edit('demooptics01') demooptics01.m> |-| Focusing of incoming fields.
+% * <matlab:edit('demoiscat01') demoiscat01.m> |-| iSCAT images for various nanoparticles.
+% * <matlab:edit('demoiscat02') demoiscat02.m> |-| iSCAT images for gold nanosphere and varying focus planes.
+%
+%%
+%
+% Copyright 2024 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

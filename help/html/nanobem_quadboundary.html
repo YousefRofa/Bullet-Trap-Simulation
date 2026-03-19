@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>quadboundary</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_quadboundary.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>quadboundary</h1>
+<!--introduction-->
+<p>The quadboundary class allows the integration over a single boundary</p>
+<p>
+<img src="nanobem_quadboundary_eq08426207573568708736.png" alt="$$ \oint_{\partial\Omega} f({\bf s})\,dS $$" style="width:67px;height:37px;"></p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#6">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  set up quadrature object</span>
+<span class="comment">%    tau      -  boundary elements</span>
+<span class="comment">%    'quad3'  -  quadrature rules for triangular elements</span>
+<span class="comment">%    'quad4'  -  quadrature rules for quadrilateral elements (not implemented yet)</span>
+<span class="comment">%    'memax'  -  slice integration into bunches of size MEMAX</span>
+obj = quadboundary( tau, PropertyPairs );
+</pre>
+<p>After initialization <tt>obj</tt> is a vector containing the different integrators for the boundary. Each integrator is for a unique boundary shape (triangular or quadrilateral) and for a unique material composition at the inside and outside.</p>
+<p>For the triangle quadrature rules <tt>quad3</tt> we provide the function</p>
+<pre class="codeinput">
+<span class="comment">%  integration rules for unit triangle</span>
+<span class="comment">%    rule     -  integration rule ranging from 1 to 19</span>
+<span class="comment">%    refine   -  subdivide unit triangle REFINE times</span>
+quad = triquad( rule );
+quad = triquad( rule, <span class="string">'refine'</span>, refine );
+</pre>
+<h2 id="3">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  material properties</span>
+mat = obj.mat;
+<span class="comment">%  material indices at boundary inside and outside</span>
+inout = obj.inout;
+<span class="comment">%  indices of TAU in OBJ.TAU</span>
+ind = indexin( obj, tau );
+<span class="comment">%  total number of integration points</span>
+n = npts( obj );
+<span class="comment">%  use RULES structure instead of PropertyPairs</span>
+rules = quadboundary( PropertyPairs );
+obj = quadboundary( tau, rules );
+<span class="comment">%  set integration rules, same PropertyPairs as for initialization</span>
+obj = setrules( obj, PropertyPairs );
+</pre>
+<p>The <tt>quadboundary</tt> object can be evaluated for boundary elements using linear or Raviart-Thomas shape elements. For the linear shape elements, tau is a <a href="nanobem_stat_boundaryvert.html">BoundaryVert</a> object.</p>
+<pre class="codeinput">
+<span class="comment">%  evaluate integrator</span>
+<span class="comment">%    pos  -  quadrature points [ntau,nw,3]</span>
+<span class="comment">%    w    -  quadrature weights [ntau,nw]</span>
+<span class="comment">%    f    -  linear shape function [ntau,nw,npoly]</span>
+[ pos, w, f ] = eval( obj );
+<span class="comment">%  interpolate from vertices to quadrature points</span>
+vi = interp( obj, v );
+</pre>
+<p>For the Raviart-Thomas shape elements, tau is a <a href="nanobem_ret_boundaryedge.html">BoundaryEdge</a> object.</p>
+<pre class="codeinput">
+<span class="comment">%  evaluate integrator</span>
+<span class="comment">%    pos  -  quadrature points [ntau,nw,3]</span>
+<span class="comment">%    w    -  quadrature weights [ntau,nw]</span>
+<span class="comment">%    f    -  Raviart-Thomas shape function [ntau,nw,npoly,3]</span>
+<span class="comment">%    fp   -  derivative of F [ntau,nw,npoly]</span>
+[ pos, w, f ] = eval( obj );
+<span class="comment">%  interpolate from edges to quadrature points</span>
+vi = interp( obj, v );
+</pre>
+<h2 id="6">Examples</h2>
+<p>Suppose that want to compute the flux of a plane wave with electromagnetic fields <img src="nanobem_quadboundary_eq17051487017086737306.png" alt="$\bf E$" style="width:10px;height:11px;">, <img src="nanobem_quadboundary_eq05483981199244207121.png" alt="$\bf H$" style="width:11px;height:11px;"> through a closed boundary</p>
+<p>
+<img src="nanobem_quadboundary_eq03051120382805088952.png" alt="$$ I=\oint_{\partial\Omega} {\bf E}\times{\bf H}^*\,\cdot d{\bf S} $$" style="width:121px;height:37px;"></p>
+<pre class="codeinput">
+<span class="comment">%  integration rules</span>
+rules = quadboundary.rules( <span class="string">'quad3'</span>, triquad( 11 ) );
+<span class="comment">%  set up integrators, use previously computed boundary elements TAU</span>
+quad = quadboundary( tau, rules );
+<span class="comment">%  initialize output</span>
+I = 0;
+
+<span class="comment">%  loop over boundary integrators</span>
+<span class="keyword">for</span> it = 1 : numel( quad )
+  <span class="comment">%  get integration points and weights</span>
+  [ pos, w ] = eval( quad( it ) );
+  <span class="comment">%  normal boundary vector</span>
+  nvec = vertcat( tau( it ).nvec );
+
+  <span class="comment">%  compute electromagnetic fields at quadrature positions</span>
+  [ e, h ] = fun( pos );
+  <span class="comment">%  update output</span>
+  <span class="keyword">...</span>
+<span class="keyword">end</span>
+</pre>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demoquad01')">demoquad01.m</a> <tt>-</tt> Plot quadrature rules provided by nanobem toolbox.</li>
+</ul>
+</div>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% quadboundary
+%
+% The quadboundary class allows the integration over a single boundary
+%
+% $$ \oint_{\partial\Omega} f({\bf s})\,dS $$
+%
+%% Initialization
+ 
+%  set up quadrature object
+%    tau      -  boundary elements
+%    'quad3'  -  quadrature rules for triangular elements
+%    'quad4'  -  quadrature rules for quadrilateral elements (not implemented yet)
+%    'memax'  -  slice integration into bunches of size MEMAX
+obj = quadboundary( tau, PropertyPairs );
+
+%%
+% After initialization |obj| is a vector containing the different
+% integrators for the boundary. Each integrator is for a unique boundary
+% shape (triangular or quadrilateral) and for a unique material composition
+% at the inside and outside.
+%
+% For the triangle quadrature rules |quad3| we provide the function
+
+%  integration rules for unit triangle
+%    rule     -  integration rule ranging from 1 to 19
+%    refine   -  subdivide unit triangle REFINE times
+quad = triquad( rule );
+quad = triquad( rule, 'refine', refine );
+
+%% Methods
+
+%  material properties
+mat = obj.mat;
+%  material indices at boundary inside and outside
+inout = obj.inout;
+%  indices of TAU in OBJ.TAU
+ind = indexin( obj, tau );
+%  total number of integration points
+n = npts( obj );
+%  use RULES structure instead of PropertyPairs
+rules = quadboundary( PropertyPairs );
+obj = quadboundary( tau, rules );
+%  set integration rules, same PropertyPairs as for initialization
+obj = setrules( obj, PropertyPairs );
+
+%%
+% The |quadboundary| object can be evaluated for boundary elements using
+% linear or Raviart-Thomas shape elements. For the linear shape elements,
+% tau is a <nanobem_stat_boundaryvert.html BoundaryVert> object.
+
+%  evaluate integrator
+%    pos  -  quadrature points [ntau,nw,3]
+%    w    -  quadrature weights [ntau,nw]
+%    f    -  linear shape function [ntau,nw,npoly]
+[ pos, w, f ] = eval( obj );
+%  interpolate from vertices to quadrature points
+vi = interp( obj, v );
+
+%%
+% For the Raviart-Thomas shape elements, tau is a
+% <nanobem_ret_boundaryedge.html BoundaryEdge> object.
+
+%  evaluate integrator
+%    pos  -  quadrature points [ntau,nw,3]
+%    w    -  quadrature weights [ntau,nw]
+%    f    -  Raviart-Thomas shape function [ntau,nw,npoly,3]
+%    fp   -  derivative of F [ntau,nw,npoly]
+[ pos, w, f ] = eval( obj );
+%  interpolate from edges to quadrature points
+vi = interp( obj, v );
+
+%% Examples
+%
+% Suppose that want to compute the flux of a plane wave with
+% electromagnetic fields $\bf E$, $\bf H$ through a closed boundary
+%
+% $$ I=\oint_{\partial\Omega} {\bf E}\times{\bf H}^*\,\cdot d{\bf S} $$
+
+%  integration rules
+rules = quadboundary.rules( 'quad3', triquad( 11 ) );
+%  set up integrators, use previously computed boundary elements TAU
+quad = quadboundary( tau, rules );
+%  initialize output
+I = 0;
+
+%  loop over boundary integrators
+for it = 1 : numel( quad )
+  %  get integration points and weights
+  [ pos, w ] = eval( quad( it ) );
+  %  normal boundary vector
+  nvec = vertcat( tau( it ).nvec );
+  
+  %  compute electromagnetic fields at quadrature positions
+  [ e, h ] = fun( pos );
+  %  update output
+  ...
+end
+
+%%
+%
+% * <matlab:edit('demoquad01') demoquad01.m> |-| Plot quadrature rules
+% provided by nanobem toolbox.
+%
+% Copyright 2022 Ulrich Hohenester
+##### SOURCE END #####
+-->
+</body>
+</html>

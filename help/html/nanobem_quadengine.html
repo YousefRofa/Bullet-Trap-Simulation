@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Quadrature engine</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_quadengine.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Quadrature engine</h1>
+<!--introduction-->
+<p>Consider the double integral</p>
+<p>
+<img src="nanobem_quadengine_eq12226044244138789337.png" alt="$$ I_1=\oint\oint F({\bf s},{\bf s'})\,dSdS' $$" style="width:145px;height:34px;"></p>
+<p>In the numerical evaluation of such integrals one often faces the problem that for boundary pairs located sufficiently close to each other the integration should be performed more accurately than for pairs of boundary elements located further apart. In the nanobem toolbox we introduce in such cases a "quadrature engine" with different integrators</p>
+<p>
+<img vspace="5" hspace="5" src="../figures/quadengine.jpg" alt=""> </p>
+<p>The <tt>std</tt> integrator performs a fast but not overly accurate integration over all boundary pairs, and the ensuing integrators (here <tt>refine</tt> and <tt>duffy</tt>) perform the refined integrations and overwrite the results of the previous integrations. This approach is applied for the calculation of</p>
+<div>
+<ul>
+<li>the single and double layer potentials for the solution of the full Maxwell equations,</li>
+<li>the Green functions of the quasistatic BEM approach,</li>
+<li>the calculation of fields and potentials between observation points located away from the nanoparticle boundary.</li>
+</ul>
+</div>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#5">Evaluation</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<p>In the following we discuss the initialization of the integration engine at the example of the single and double layer potentials of the BEM approach, see <a href="matlab:edit('galerkin.pot1.engine')">galerkin.pot1.engine</a>
+</p>
+<pre class="codeinput">
+<span class="comment">%  default integrator</span>
+rules = quadboundary( <span class="string">'quad3'</span>, triquad( 1 ) );
+pot( 1 ) = galerkin.pot1.std( <span class="string">'rules'</span>, rules );
+<span class="comment">%  refined integrators</span>
+rules1 = quadboundary( <span class="string">'quad3'</span>, triquad( 11 ) );
+pot( 2 ) = galerkin.pot1.refine2( <span class="string">'rules1'</span>, rules1, <span class="string">'relcutoff'</span>, 2 );
+pot( 3 ) = galerkin.pot1.duffy2( <span class="string">'nduffy'</span>, 4 );
+</pre>
+<p>After this first initialization the quadrature rules are stored in the <tt>pot</tt> array. The standard integrator will be later used for all boundary pairs, the refine integrator for boundary elememts closer than relcutoff (see <a href="matlab:doc('BoundaryElement/bdist2')">bdist2</a>), and the Duffy integrator for identical or touching boundary elements.</p>
+<p>In a second step the integration engine is applied to a pair of boundary elements</p>
+<pre class="codeinput">
+<span class="comment">%  initialize potential integrator for boundary elements TAU1, TAU2</span>
+pot = set( pot, tau1, tau2 )
+</pre>
+<pre>1�5 heterogeneous base (std, refine2, duffy2) array with properties:</pre>
+<pre>  parent</pre>
+<p>The potential integrators can now be used for the evaluation of the single and double layer potentials, or for the evaluation of potentials and fields.</p>
+<h2 id="5">Evaluation</h2>
+<p>For the evaluation of the inegration engine one first has to split them into bunches each starting with a std (parent) integrator</p>
+<pre class="codeinput"> <span class="comment">%  split array at PARENT positions into cell array</span>
+  pot = mat2cell( pot );
+</pre>
+<p>After that the different integrators can be evaluated successively</p>
+<pre class="codeinput">
+<span class="comment">%  loop over integration engines each starting with a STD integrator</span>
+<span class="keyword">for</span> it = 1 : numel( pot )
+  <span class="comment">%  evaluate STD integrator for given wavenumber K0</span>
+  pot1 = pot{ it };
+  data = eval2( pot1( 1 ), k0 );
+  <span class="comment">%  refinement integrators, overwrite previous results</span>
+  <span class="keyword">for</span> i1 = 2 : numel( pot1 )
+    data = eval2( pot1( i1 ), k0, data );
+  <span class="keyword">end</span>
+  <span class="comment">%  process final result</span>
+  <span class="keyword">...</span>
+<span class="keyword">end</span>
+</pre>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Quadrature engine
+%
+% Consider the double integral
+%
+% $$ I_1=\oint\oint F({\bf s},{\bf s'})\,dSdS' $$
+%
+% In the numerical evaluation of such integrals one often faces the problem
+% that for boundary pairs located sufficiently close to each other the
+% integration should be performed more accurately than for pairs of
+% boundary elements located further apart. In the nanobem toolbox we
+% introduce in such cases a "quadrature engine" with different integrators
+%
+% <<../figures/quadengine.jpg>>
+%
+% The |std| integrator performs a fast but not overly accurate integration
+% over all boundary pairs, and the ensuing integrators (here |refine| and
+% |duffy|) perform the refined integrations and overwrite the results of
+% the previous integrations. This approach is applied for the calculation
+% of
+%
+% * the single and double layer potentials for the solution of the full
+% Maxwell equations,
+% * the Green functions of the quasistatic BEM approach,
+% * the calculation of fields and potentials between observation points
+% located away from the nanoparticle boundary.
+%
+%% Initialization
+%
+% In the following we discuss the initialization of the integration engine
+% at the example of the single and double layer potentials of the BEM
+% approach, see <matlab:edit('galerkin.pot1.engine') galerkin.pot1.engine>
+
+%  default integrator
+rules = quadboundary( 'quad3', triquad( 1 ) );
+pot( 1 ) = galerkin.pot1.std( 'rules', rules );
+%  refined integrators
+rules1 = quadboundary( 'quad3', triquad( 11 ) );
+pot( 2 ) = galerkin.pot1.refine2( 'rules1', rules1, 'relcutoff', 2 );
+pot( 3 ) = galerkin.pot1.duffy2( 'nduffy', 4 ); 
+
+%%
+% After this first initialization the quadrature rules are stored in the
+% |pot| array. The standard integrator will be later used for all boundary
+% pairs, the refine integrator for boundary elememts closer than relcutoff
+% (see <matlab:doc('BoundaryElement/bdist2') bdist2>), and the Duffy
+% integrator for identical or touching boundary elements.
+%
+% In a second step the integration engine is applied to a pair of boundary
+% elements
+
+%  initialize potential integrator for boundary elements TAU1, TAU2
+pot = set( pot, tau1, tau2 )
+
+%%
+%  1�5 heterogeneous base (std, refine2, duffy2) array with properties:
+%
+%    parent
+%%
+% The potential integrators can now be used for the evaluation of the
+% single and double layer potentials, or for the evaluation of potentials
+% and fields.
+%
+%% Evaluation
+%
+% For the evaluation of the inegration engine one first has to split them
+% into bunches each starting with a std (parent) integrator
+
+ %  split array at PARENT positions into cell array
+  pot = mat2cell( pot );
+  
+%%
+% After that the different integrators can be evaluated successively
+  
+%  loop over integration engines each starting with a STD integrator
+for it = 1 : numel( pot )
+  %  evaluate STD integrator for given wavenumber K0
+  pot1 = pot{ it };
+  data = eval2( pot1( 1 ), k0 );
+  %  refinement integrators, overwrite previous results
+  for i1 = 2 : numel( pot1 )
+    data = eval2( pot1( i1 ), k0, data );
+  end
+  %  process final result
+  ...
+end
+    
+%%
+%
+% Copyright 2022 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

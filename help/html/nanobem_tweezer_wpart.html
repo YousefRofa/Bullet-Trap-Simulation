@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>tweezer.walkerparticle</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_tweezer_wpart.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tweezer.walkerparticle</h1>
+<!--introduction-->
+<p>Tweezer simulations of particles subject to optical and fluidic forces are performed with the <i>tweezer.walkerparticle</i> class.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#5">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<p>Walkers are initialized by providing the following information.</p>
+<pre class="codeinput">
+<span class="comment">%  initialize walker for particles in tweezer simulations</span>
+<span class="comment">%    scatterer    -  optical force evaluator for particle</span>
+<span class="comment">%    fluid        -  Stokes drag and diffusion for particle</span>
+<span class="comment">%    pos          -  initial walker positions</span>
+<span class="comment">%    rot          -  rotation matrix or matrices for particles</span>
+walker = tweezer.walkerparticle( scatterer, fluid, pos, rot );
+</pre>
+<p>The rotation matrix must rotate the particle into the proper orientatuon within the laboratory frame. Alternatively the positions can be set after initialization.</p>
+<pre class="codeinput">
+<span class="comment">%  set walker positions and orientations after initialization</span>
+walker.pos = pos;
+walker.rot = rot;
+</pre>
+<h2 id="3">Methods</h2>
+<p>Once the <i>tweezer.walkerparticle</i> is initialized, the following methods are available.</p>
+<pre class="codeinput">
+<span class="comment">%  propagate walker in time and in presence of optofluidic forces</span>
+<span class="comment">%    tout       -  output times</span>
+<span class="comment">%    solver     -  'ode23' or 'ode45' (default)</span>
+<span class="comment">%    waitbar    -  show waitbar during ODE solution</span>
+<span class="comment">%    wout       -  array of walkers with positions and velocities at output times</span>
+wout = propagatet( walker, tout, <span class="string">'solver'</span>, <span class="string">'ode45'</span>, <span class="string">'waitbar'</span>, 1 );
+
+<span class="comment">%  propagate walker in space and in presence of optofluidic forces</span>
+<span class="comment">%    zout       -  propagation distances where output is requested</span>
+<span class="comment">%    tout       -  output times</span>
+[ wout, tout ] = propagatez( walker, tout, <span class="string">'solver'</span>, <span class="string">'ode45'</span>, <span class="string">'waitbar'</span>, 1 );
+</pre>
+<p>Additionally, one can also perform simulations under consideration of Brownian motion.</p>
+<pre class="codeinput">
+<span class="comment">%  propagate walker in time using Brownian motion and optofluidic forces</span>
+<span class="comment">%    tout       -  output times</span>
+<span class="comment">%    nsub       -  divide each time interval into NSUB sub-intervals</span>
+<span class="comment">%    waitbar    -  show waitbar during evaluation</span>
+<span class="comment">%    wout       -  array of walkers with positions and velocities at output times</span>
+wout = browniant( walker, zout, <span class="string">'nsub'</span>, 10, <span class="string">'waitbar'</span>, 1 );
+
+<span class="comment">%  propagate walker in space using Brownian motion and optofluidic forces</span>
+<span class="comment">%    zout       -  propagation distances where output is requested</span>
+<span class="comment">%    tout       -  walker times at ZOUT</span>
+[ wout, tout ] = brownianz( walker, zout, <span class="string">'nsub'</span>, 10, <span class="string">'waitbar'</span>, 1 );
+</pre>
+<h2 id="5">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demowalkerpol01')">demowalkerpol01.m</a> <tt>-</tt> Propagate ellipsoidal walkers in OF2i setup.</li>
+<li>
+<a href="matlab:edit('demowalkerpol02')">demowalkerpol02.m</a> <tt>-</tt> 3d plot of ellipsoidal walkers in OF2i setup.</li>
+<li>
+<a href="matlab:edit('demowalkerpol03')">demowalkerpol03.m</a> <tt>-</tt> Light scattering for ellipsodial walkers in OF2i setup.</li>
+</ul>
+</div>
+<p>Copyright 2025 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% tweezer.walkerparticle
+%
+% Tweezer simulations of particles subject to optical and fluidic forces
+% are performed with the _tweezer.walkerparticle_ class.
+%
+%% Initialization
+% 
+% Walkers are initialized by providing the following information.
+
+%  initialize walker for particles in tweezer simulations
+%    scatterer    -  optical force evaluator for particle
+%    fluid        -  Stokes drag and diffusion for particle
+%    pos          -  initial walker positions
+%    rot          -  rotation matrix or matrices for particles
+walker = tweezer.walkerparticle( scatterer, fluid, pos, rot );
+
+%%
+% The rotation matrix must rotate the particle into the proper orientatuon
+% within the laboratory frame. Alternatively the positions can be set after
+% initialization.
+
+%  set walker positions and orientations after initialization
+walker.pos = pos;
+walker.rot = rot;
+
+%% Methods
+%
+% Once the _tweezer.walkerparticle_ is initialized, the following methods
+% are available.
+
+%  propagate walker in time and in presence of optofluidic forces
+%    tout       -  output times
+%    solver     -  'ode23' or 'ode45' (default)
+%    waitbar    -  show waitbar during ODE solution
+%    wout       -  array of walkers with positions and velocities at output times
+wout = propagatet( walker, tout, 'solver', 'ode45', 'waitbar', 1 );
+
+%  propagate walker in space and in presence of optofluidic forces
+%    zout       -  propagation distances where output is requested
+%    tout       -  output times
+[ wout, tout ] = propagatez( walker, tout, 'solver', 'ode45', 'waitbar', 1 );
+
+%%
+% Additionally, one can also perform simulations under consideration of
+% Brownian motion.
+
+%  propagate walker in time using Brownian motion and optofluidic forces 
+%    tout       -  output times
+%    nsub       -  divide each time interval into NSUB sub-intervals
+%    waitbar    -  show waitbar during evaluation
+%    wout       -  array of walkers with positions and velocities at output times
+wout = browniant( walker, zout, 'nsub', 10, 'waitbar', 1 );
+
+%  propagate walker in space using Brownian motion and optofluidic forces 
+%    zout       -  propagation distances where output is requested
+%    tout       -  walker times at ZOUT
+[ wout, tout ] = brownianz( walker, zout, 'nsub', 10, 'waitbar', 1 );
+
+%% Examples
+%
+% * <matlab:edit('demowalkerpol01') demowalkerpol01.m> |-| Propagate ellipsoidal walkers in OF2i setup.
+% * <matlab:edit('demowalkerpol02') demowalkerpol02.m> |-| 3d plot of ellipsoidal walkers in OF2i setup.
+% * <matlab:edit('demowalkerpol03') demowalkerpol03.m> |-| Light scattering for ellipsodial walkers in OF2i setup.
+%
+% Copyright 2025 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

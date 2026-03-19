@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>tweezer.rotation</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_tweezer_rot.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tweezer.rotation</h1>
+<!--introduction-->
+<p>To account for particle rotations in tweezer simulations we provide the <i>tweezer.rotation</i> class that uses quaternions. In most cases of interest this class is only used internally.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#4">multipole.rotation</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<p>The rotation of a particle is initialized through</p>
+<pre class="codeinput">
+<span class="comment">%  initialize rotation matrix using quaternions</span>
+<span class="comment">%    rot    -  rotation matrix or matrices for particles</span>
+<span class="comment">%    q      -  quaternion vector or matrix</span>
+obj = tweezer.rotation( rot );          <span class="comment">%  initialization using matrix</span>
+obj = tweezer.rotation( <span class="string">'quater'</span>, q );  <span class="comment">%  initialization using quaternions (q0,q1,q2,q3)</span>
+</pre>
+<p>Below we discuss how to set up rotation matrices <i>rot</i>.</p>
+<h2 id="3">Methods</h2>
+<p>Once the <i>tweezer.rotation</i> is initialized, the following functions can be used.</p>
+<pre class="codeinput">
+<span class="comment">%  build from quaternion representation a rotation matrix ROT</span>
+rot = eval( obj );
+<span class="comment">%  derivative of quaternions for given angular velocity</span>
+<span class="comment">%    w    -  angular velocity</span>
+<span class="comment">%    y    -  derivative of quaternions</span>
+y = deriv( obj, w );
+</pre>
+<h2 id="4">multipole.rotation</h2>
+<p>In Matlab there exist numerous functions for setting up rotation matrices. In addition, we provide the function <i>multipole.rotation</i> for setting up rotation matrices.</p>
+<pre class="codeinput">
+<span class="comment">%  set up rotation matrix using Euler angles</span>
+<span class="comment">%    t        -  vector or matrix of angles</span>
+<span class="comment">%   'axes'    -  sequence of rotation axes, 'xzx' on default (from left to right)</span>
+<span class="comment">%   'angle'   -  'rad' or 'deg' (default)</span>
+<span class="comment">%   'trans'   -  transpose of matrix, 0 on default</span>
+rot = multipole.rotation( t, <span class="string">'axes'</span>, <span class="string">'xz'</span>, <span class="string">'angle'</span>, <span class="string">'deg'</span>, <span class="string">'trans'</span>, 0 );
+</pre>
+<p>To set up for instance a rotation matrix for the following rotations</p>
+<p>
+<img src="nanobem_tweezer_rot_eq04372903680645370349.png" alt="$$ R_x(10^\circ)R_z(20^\circ)R_y(30^\circ), $$" style="width:129px;height:15px;"></p>
+<p>one provides a vector [30,20,10] that defines the rotations such that the rotations are concatenated from left to right,</p>
+<pre class="codeinput">
+<span class="comment">%  rotation matrix for R_x(10)&times;R_z(20)&times;R_x(30)</span>
+rot = multipole.rotation( [ 30, 20, 10 ], <span class="string">'axes'</span>, <span class="string">'yzx'</span> );
+</pre>
+<p>Multiple rotation matrices can be combined into one array</p>
+<pre class="codeinput">rot = multipole.rotation( [ 30, 20, 10; 10, 20, 30 ] )
+</pre>
+<pre>rot(:,:,1) =</pre>
+<pre>    0.7713   -0.6337    0.0594
+    0.6131    0.7146   -0.3368
+    0.1710    0.2962    0.9397</pre>
+<pre>rot(:,:,2) =</pre>
+<pre>    0.7713   -0.6131    0.1710
+    0.6337    0.7146   -0.2962
+    0.0594    0.3368    0.9397</pre>
+<p>Copyright 2025 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% tweezer.rotation
+%
+% To account for particle rotations in tweezer simulations we provide the
+% _tweezer.rotation_ class that uses quaternions. In most cases of interest
+% this class is only used internally.
+%
+%% Initialization
+% 
+% The rotation of a particle is initialized through
+
+%  initialize rotation matrix using quaternions
+%    rot    -  rotation matrix or matrices for particles
+%    q      -  quaternion vector or matrix
+obj = tweezer.rotation( rot );          %  initialization using matrix
+obj = tweezer.rotation( 'quater', q );  %  initialization using quaternions (q0,q1,q2,q3)
+
+%%
+% Below we discuss how to set up rotation matrices _rot_.
+%
+%% Methods
+%
+% Once the _tweezer.rotation_ is initialized, the following functions can
+% be used.
+
+%  build from quaternion representation a rotation matrix ROT
+rot = eval( obj );
+%  derivative of quaternions for given angular velocity 
+%    w    -  angular velocity
+%    y    -  derivative of quaternions
+y = deriv( obj, w );
+
+%% multipole.rotation 
+%
+% In Matlab there exist numerous functions for setting up rotation
+% matrices. In addition, we provide the function _multipole.rotation_ for
+% setting up rotation matrices.
+
+%  set up rotation matrix using Euler angles
+%    t        -  vector or matrix of angles
+%   'axes'    -  sequence of rotation axes, 'xzx' on default (from left to right)
+%   'angle'   -  'rad' or 'deg' (default)
+%   'trans'   -  transpose of matrix, 0 on default
+rot = multipole.rotation( t, 'axes', 'xz', 'angle', 'deg', 'trans', 0 );
+
+%%
+% To set up for instance a rotation matrix for the following rotations
+%
+% $$ R_x(10^\circ)R_z(20^\circ)R_y(30^\circ), $$
+%
+% one provides a vector [30,20,10] that defines the rotations such that the
+% rotations are concatenated from left to right,
+
+%  rotation matrix for R_x(10)×R_z(20)×R_x(30)
+rot = multipole.rotation( [ 30, 20, 10 ], 'axes', 'yzx' );
+
+%%
+% Multiple rotation matrices can be combined into one array
+
+rot = multipole.rotation( [ 30, 20, 10; 10, 20, 30 ] )
+
+%%
+%  rot(:,:,1) =
+% 
+%      0.7713   -0.6337    0.0594
+%      0.6131    0.7146   -0.3368
+%      0.1710    0.2962    0.9397
+% 
+% 
+%  rot(:,:,2) =
+% 
+%      0.7713   -0.6131    0.1710
+%      0.6337    0.7146   -0.2962
+%      0.0594    0.3368    0.9397
+%
+%%
+%
+% Copyright 2025 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

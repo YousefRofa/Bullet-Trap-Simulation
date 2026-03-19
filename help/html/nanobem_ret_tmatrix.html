@@ -1,0 +1,466 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>multipole.tmatrix</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_ret_tmatrix.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>multipole.tmatrix</h1>
+<!--introduction-->
+<p>
+<i>multipole.tmatrix</i> stores the T-matrices. For the multipoles we use the definition of Hohenester "Nano and Quantum Optics" (Springer, 2020), Eq. (E.4).</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#7">Save T-matrices</a>
+</li>
+<li>
+<a href="#11">T-matrices for spheres and ellipsoides</a>
+</li>
+<li>
+<a href="#13">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<p>The T-matrix solver is initialized with</p>
+<pre class="codeinput">
+<span class="comment">%  initialize solver for T-matrices</span>
+<span class="comment">%    solver     -  T-matrix or Mie solver</span>
+<span class="comment">%    k0         -  wavenumber of light in vacuum</span>
+tmat = multipole.tmatrix( solver, k0 );
+<span class="comment">%  add T-matrix components</span>
+tmat.aa = aa;     <span class="comment">%  TM-TM elements</span>
+tmat.ab = ab;     <span class="comment">%  TM-TE elements</span>
+tmat.ba = ba;     <span class="comment">%  TE-TM elements</span>
+tmat.bb = bb;     <span class="comment">%  TE-TE elements</span>
+</pre>
+<p>Alternatively one can read the T-matrices stored in a h5-file, with the storage convention of  <a href="https://github.com/tfp-photonics/treams">treams</a>.</p>
+<pre class="codeinput">
+<span class="comment">%  load T-matrix solver and T-matrices from input file</span>
+<span class="comment">%    finp     -  h5 input file</span>
+[ tsolver, tmat ] = h5load( finp );
+</pre>
+<h2 id="3">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  convert between treams and nanobem conventions, used internally</span>
+tmat = convert( tmat, <span class="string">'to_h5'</span> );
+tmat = convert( tmat, <span class="string">'from_h5'</span> );
+<span class="comment">%  expand T-matrices to full size [aa,ab;ba,bb]</span>
+t = full( tmat );
+<span class="comment">%  select specific T-matrix elements</span>
+<span class="comment">%    fun    -  function @(l,m) for selection of specific (l,m) values</span>
+<span class="comment">%    ind    -  index to selected elements of tmat.tab</span>
+tmat = select( tmat, fun );
+tmat = select( tmat, ind );
+<span class="comment">%  average optical cross section</span>
+csca = scattering( tmat );
+cext = extinction( tmat );
+</pre>
+<p>T-matrices can be used for computing the multipoles for a given incoming excitation.</p>
+<pre class="codeinput">
+<span class="comment">%  inhomogeneity for incoming fields</span>
+<span class="comment">%    fun        -  incoming fields [e,h]=fun(pos,k0)</span>
+<span class="comment">%    diameter   -  diameter for multipole expansion, Jackson Eq. (9.123)</span>
+q = qinc( tmat, fun );
+q = qinc( tmat, fun, diameter );
+<span class="comment">%  solve T-matrix equation</span>
+<span class="comment">%    sol        -  solution vector of type multipole.solution</span>
+sol = solve( tmat, q );
+</pre>
+<p>T-matrices can be rotated and translate.</p>
+<pre class="codeinput">
+<span class="comment">%  rotate T-matrix</span>
+<span class="comment">%    rot    -  rotation matrix of size 3&times;3 or 3&times;3&times;n</span>
+tmat = rotate( tmat, rot );
+<span class="comment">%  translate T-matrix</span>
+<span class="comment">%    shift  -  translation vector of size n&times;3</span>
+tmat = translate( tmat, shift );
+</pre>
+<p>It is also possible to combine several T-matrices for different multipole centers into a single matrix. Depending on the <i>interaction</i> flag, the combined T-matrix accounts for interactions between the different scatterers.</p>
+<pre class="codeinput">
+<span class="comment">%  combine several T-matrices</span>
+<span class="comment">%    tvec         -  vector of T-matrices</span>
+<span class="comment">%    shift        -  origins of scatterers characterized by TVEC</span>
+<span class="comment">%    interaction  -  consider interactions between scatterers ?</span>
+tmat = union( tvec, shift, <span class="string">'interaction'</span>, 1 );
+</pre>
+<h2 id="7">Save T-matrices</h2>
+<p>T-matrices can be stored to a h5-file using the storage convention of <a href="https://github.com/tfp-photonics/treams">treams</a>. A more detailed description is given in N. Asadova et al., <i>T-matrix representation of optical scattering response: Suggestion for a data format</i>, <a href="https://arxiv.org/abs/2408.10727">arXiv:2408.10727</a>
+</p>
+<pre class="codeinput">
+<span class="comment">%  save T-matrix or array of T-matrices to h5-file</span>
+<span class="comment">%    fout     -  output file</span>
+<span class="comment">%    info     -  additional info</span>
+h5save( tmat, fout, info );
+</pre>
+<p>The structure with the additional information can be produced with the multipole.h5info function.</p>
+<pre class="codeinput">
+<span class="comment">%  obtain default info structure</span>
+info = multipole.h5info
+</pre>
+<pre>info =</pre>
+<pre>  struct with fields:</pre>
+<pre>       description: ""
+             files: []
+          keywords: ""
+    matdescription: []
+           matname: []
+              name: ""
+   scatdescription: []
+     scatgroupname: []
+          scatname: []
+               tau: []</pre>
+<p>The entries can be modified by editing the fields of the structure or by passing their values in the form of property pairs to the call of multipole.hinfo. As an example, consider a T-matrix simulation for a dielectric nanosphere.</p>
+<pre class="codeinput">
+<span class="comment">%  global name and description</span>
+info.name = <span class="string">"Dielectric nanosphere"</span>;
+info.description = <span class="string">"Single sphere (160 nm) and single wavelength (1 mu)"</span>;
+<span class="comment">%  additional information for each material object</span>
+info.matname = [ <span class="string">"Embedding medium"</span>, <span class="string">"Dielectric material of sphere"</span> ];
+<span class="comment">%  save discretized nanoparticle boundary in /computation/geometry</span>
+info.tau = tau;
+<span class="comment">%  save additional matlab scripts or data files in /computation, [] if none</span>
+info.files = [];
+</pre>
+<p>After creating the h5 data file <i>fout</i> one might like to add additional information, such as the shape and size of basic three-dimensional geometries. This can be done by directly writing to the h5 file, as shown here for a dielectric sphere with a given diameter.</p>
+<pre class="codeinput">
+<span class="comment">%  add shape and radius to scatterer (optional)</span>
+h5create( fout, <span class="string">'/scatterer_1/geometry/radius'</span>, 1 );
+h5write( fout, <span class="string">'/scatterer_1/geometry/radius'</span>, 0.5 * diameter );
+h5writeatt( fout, <span class="string">'/scatterer_1/geometry'</span>, <span class="string">'shape'</span>, <span class="string">"sphere"</span> );
+h5writeatt( fout, <span class="string">'/scatterer_1/geometry/radius'</span>, <span class="string">'unit'</span>, <span class="string">"nm"</span> );
+</pre>
+<h2 id="11">T-matrices for spheres and ellipsoides</h2>
+<p>The toolbox provides two functions for the creation of T-matrices for spheres and ellipsoides.</p>
+<pre class="codeinput">
+<span class="comment">%  T-matrix for sphere</span>
+<span class="comment">%    mat1       -  material at sphere inside</span>
+<span class="comment">%    mat2       -  material at sphere outside</span>
+<span class="comment">%    diameter   -  sphere diameter</span>
+<span class="comment">%    k0         -  wavenumber of light in vacuum</span>
+<span class="comment">%    lmax       -  maximal spherical degree</span>
+
+tmat = multipole.tmatsphere( mat1, mat2, diameter, k0, <span class="string">'lmax'</span>, lmax );
+<span class="comment">%  T-matrix for ellipsoid</span>
+<span class="comment">%    mat1       -  material at ellipsoid inside</span>
+<span class="comment">%    mat2       -  material at ellipsoid outside</span>
+<span class="comment">%    diameter   -  ellipsoid diameter (xy)</span>
+<span class="comment">%    ratio      -  axis ration z : (xy)</span>
+<span class="comment">%    k0         -  wavenumber of light in vacuum</span>
+<span class="comment">%    lmax       -  maximal spherical degree</span>
+tmat = multipole.tmatellipsoid( mat1, mat2, diameter, ratio, k0, <span class="string">'lmax'</span>, lmax );
+</pre>
+<p>For particles with a symmetry of revolution see also multipole.polsover.</p>
+<h2 id="13">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demomulti01')">demomulti01.m</a> <tt>-</tt> T-matrix for dielectric nanosphere and single wavelength.</li>
+<li>
+<a href="matlab:edit('demomulti02')">demomulti02.m</a> <tt>-</tt> T-matrices for TiO2 nanodisk and multiple wavelengths.</li>
+<li>
+<a href="matlab:edit('demomultirot01')">demomultirot01.m</a> <tt>-</tt> Rotation of T-matrix.</li>
+<li>
+<a href="matlab:edit('demomultitrans01')">demomultitrans01.m</a> <tt>-</tt> Translate multipole solution.</li>
+<li>
+<a href="matlab:edit('demomultitrans02')">demomultitrans02.m</a> <tt>-</tt> Coupled spheres with BEM and coupled T-matrices.</li>
+<li>
+<a href="matlab:edit('demomultitrans03')">demomultitrans03.m</a> <tt>-</tt> Coupled dielectric spheres.</li>
+</ul>
+</div>
+<p>The following demo files show how to read in the previously stored T-matrices into a Python file to be used in combination with <a href="https://github.com/tfp-photonics/treams">treams</a>.</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demomulti01.py')">demomulti01.py</a> <tt>-</tt> Averaged scattering spectra for single nanoparticle.</li>
+<li>
+<a href="matlab:edit('demomulti02.py')">demomulti02.py</a> <tt>-</tt> Same as demomulti02.py but for planewave excitation.</li>
+<li>
+<a href="matlab:edit('demomulti03.py')">demomulti03.py</a> <tt>-</tt> Scattering spectra for coupled nanoparticles.</li>
+</ul>
+</div>
+<p>Copyright 2024 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% multipole.tmatrix
+%
+% _multipole.tmatrix_ stores the T-matrices. For the multipoles we use the
+% definition of Hohenester "Nano and Quantum Optics" (Springer, 2020), Eq.
+% (E.4).
+%
+%% Initialization
+%
+% The T-matrix solver is initialized with
+
+%  initialize solver for T-matrices
+%    solver     -  T-matrix or Mie solver
+%    k0         -  wavenumber of light in vacuum
+tmat = multipole.tmatrix( solver, k0 );
+%  add T-matrix components
+tmat.aa = aa;     %  TM-TM elements
+tmat.ab = ab;     %  TM-TE elements
+tmat.ba = ba;     %  TE-TM elements
+tmat.bb = bb;     %  TE-TE elements
+
+%%
+% Alternatively one can read the T-matrices stored in a h5-file, with the
+% storage convention of  <https://github.com/tfp-photonics/treams treams>.
+
+%  load T-matrix solver and T-matrices from input file
+%    finp     -  h5 input file 
+[ tsolver, tmat ] = h5load( finp );
+
+%% Methods
+
+%  convert between treams and nanobem conventions, used internally
+tmat = convert( tmat, 'to_h5' );
+tmat = convert( tmat, 'from_h5' );
+%  expand T-matrices to full size [aa,ab;ba,bb]
+t = full( tmat );
+%  select specific T-matrix elements
+%    fun    -  function @(l,m) for selection of specific (l,m) values
+%    ind    -  index to selected elements of tmat.tab
+tmat = select( tmat, fun );
+tmat = select( tmat, ind );
+%  average optical cross section
+csca = scattering( tmat );
+cext = extinction( tmat );
+
+%%
+% T-matrices can be used for computing the multipoles for a given incoming
+% excitation.
+
+%  inhomogeneity for incoming fields
+%    fun        -  incoming fields [e,h]=fun(pos,k0) 
+%    diameter   -  diameter for multipole expansion, Jackson Eq. (9.123)
+q = qinc( tmat, fun );
+q = qinc( tmat, fun, diameter );
+%  solve T-matrix equation
+%    sol        -  solution vector of type multipole.solution
+sol = solve( tmat, q );
+
+%% 
+% T-matrices can be rotated and translate.
+
+%  rotate T-matrix
+%    rot    -  rotation matrix of size 3×3 or 3×3×n
+tmat = rotate( tmat, rot );
+%  translate T-matrix
+%    shift  -  translation vector of size n×3
+tmat = translate( tmat, shift );
+
+%%
+% It is also possible to combine several T-matrices for different multipole
+% centers into a single matrix.  Depending on the _interaction_ flag, the
+% combined T-matrix accounts for interactions between the different
+% scatterers.
+
+%  combine several T-matrices
+%    tvec         -  vector of T-matrices
+%    shift        -  origins of scatterers characterized by TVEC
+%    interaction  -  consider interactions between scatterers ?
+tmat = union( tvec, shift, 'interaction', 1 );
+
+%% Save T-matrices
+%
+% T-matrices can be stored to a h5-file using the storage convention of
+% <https://github.com/tfp-photonics/treams treams>. A more detailed
+% description is given in N. Asadova et al., _T-matrix representation of
+% optical scattering response: Suggestion for a data format_,
+% <https://arxiv.org/abs/2408.10727 arXiv:2408.10727>
+
+%  save T-matrix or array of T-matrices to h5-file
+%    fout     -  output file
+%    info     -  additional info
+h5save( tmat, fout, info );
+
+%%
+% The structure with the additional information can be produced with the
+% multipole.h5info function.
+
+%  obtain default info structure
+info = multipole.h5info
+
+%%
+%  info = 
+% 
+%    struct with fields:
+% 
+%         description: ""
+%               files: []
+%            keywords: ""
+%      matdescription: []
+%             matname: []
+%                name: ""
+%     scatdescription: []
+%       scatgroupname: []
+%            scatname: []
+%                 tau: []
+%
+% The entries can be modified by editing the fields of the structure or by
+% passing their values in the form of property pairs to the call of
+% multipole.hinfo. As an example, consider a T-matrix simulation for a
+% dielectric nanosphere.
+
+%  global name and description
+info.name = "Dielectric nanosphere";
+info.description = "Single sphere (160 nm) and single wavelength (1 mu)";
+%  additional information for each material object
+info.matname = [ "Embedding medium", "Dielectric material of sphere" ];
+%  save discretized nanoparticle boundary in /computation/geometry
+info.tau = tau;
+%  save additional matlab scripts or data files in /computation, [] if none
+info.files = [];
+
+%%
+% After creating the h5 data file _fout_ one might like to add additional
+% information, such as the shape and size of basic three-dimensional
+% geometries. This can be done by directly writing to the h5 file, as shown
+% here for a dielectric sphere with a given diameter.
+
+%  add shape and radius to scatterer (optional)
+h5create( fout, '/scatterer_1/geometry/radius', 1 );
+h5write( fout, '/scatterer_1/geometry/radius', 0.5 * diameter );
+h5writeatt( fout, '/scatterer_1/geometry', 'shape', "sphere" );
+h5writeatt( fout, '/scatterer_1/geometry/radius', 'unit', "nm" );
+
+%% T-matrices for spheres and ellipsoides
+%
+% The toolbox provides two functions for the creation of T-matrices for
+% spheres and ellipsoides.
+
+%  T-matrix for sphere
+%    mat1       -  material at sphere inside
+%    mat2       -  material at sphere outside
+%    diameter   -  sphere diameter
+%    k0         -  wavenumber of light in vacuum
+%    lmax       -  maximal spherical degree 
+
+tmat = multipole.tmatsphere( mat1, mat2, diameter, k0, 'lmax', lmax );
+%  T-matrix for ellipsoid
+%    mat1       -  material at ellipsoid inside
+%    mat2       -  material at ellipsoid outside
+%    diameter   -  ellipsoid diameter (xy)
+%    ratio      -  axis ration z : (xy)
+%    k0         -  wavenumber of light in vacuum
+%    lmax       -  maximal spherical degree 
+tmat = multipole.tmatellipsoid( mat1, mat2, diameter, ratio, k0, 'lmax', lmax );
+
+%%
+% For particles with a symmetry of revolution see also multipole.polsover.
+%
+%% Examples
+%
+% * <matlab:edit('demomulti01') demomulti01.m> |-| T-matrix for dielectric
+% nanosphere and single wavelength.
+% * <matlab:edit('demomulti02') demomulti02.m> |-| T-matrices for TiO2
+% nanodisk and multiple wavelengths.
+% * <matlab:edit('demomultirot01') demomultirot01.m> |-| Rotation of T-matrix.
+% * <matlab:edit('demomultitrans01') demomultitrans01.m> |-| Translate multipole solution.
+% * <matlab:edit('demomultitrans02') demomultitrans02.m> |-| Coupled spheres with BEM and coupled T-matrices.
+% * <matlab:edit('demomultitrans03') demomultitrans03.m> |-| Coupled dielectric spheres.
+%
+% The following demo files show how to read in the previously stored
+% T-matrices into a Python file to be used in combination with
+% <https://github.com/tfp-photonics/treams treams>.
+%
+% * <matlab:edit('demomulti01.py') demomulti01.py> |-| Averaged scattering
+% spectra for single nanoparticle.
+% * <matlab:edit('demomulti02.py') demomulti02.py> |-| Same as
+% demomulti02.py but for planewave excitation.
+% * <matlab:edit('demomulti03.py') demomulti03.py> |-| Scattering spectra
+% for coupled nanoparticles.
+%
+% Copyright 2024 Ulrich Hohenester
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

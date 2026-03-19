@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>multipole.solution</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_ret_tsol.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>multipole.solution</h1>
+<!--introduction-->
+<p>
+<i>multipole.solution</i> stores the multipole solution and allows for various kinds of post-processing.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#5">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<p>The T-matrix solution is initialized with</p>
+<pre class="codeinput">
+<span class="comment">%  Initialize T-matrix solution</span>
+<span class="comment">%    lmax     -  maximal degree for multipole expansion</span>
+<span class="comment">%    mat      -  material properties of embedding medium</span>
+<span class="comment">%    k0       -  wavenumber of light in vacuum</span>
+<span class="comment">%    a        -  TM scattering coefficients</span>
+<span class="comment">%    b        -  TE scattering coefficients</span>
+<span class="comment">%    ai       -  TM incoming coefficients</span>
+<span class="comment">%    bi       -  TE incoming coefficients</span>
+sol = multipole.solution( lmax, mat, k0, a, b, ai, bi );
+</pre>
+<p>Alternatively, one can initialize the object with fewer variables and add them later to the object.</p>
+<pre class="codeinput">
+<span class="comment">%  Initialize T-matrix solution</span>
+sol = multipole.solution( lmax, mat, k0 );
+sol.a = a;
+sol.b = b;
+</pre>
+<h2 id="3">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  electromagnetic multipole fields in embedding medium</span>
+<span class="comment">%    pos    -  positions where fields are evaluated</span>
+[ e, h ] = fields( sol, pos );
+<span class="comment">%  electromagnetic far-fields</span>
+<span class="comment">%    dir    -  propagation directions for far-fields</span>
+<span class="comment">%    shift  -  shift origin of multipole expansion</span>
+[ e, h ] = farfields( sol, dir );
+[ e, h ] = farfields( sol, dir, <span class="string">'shift'</span>, shift );
+<span class="comment">%  scattering and extinction power, cext is divided by incoming power</span>
+csca = scattering( sol );
+cext = extinction( sol );
+<span class="comment">%  scattering power for user-defined detector</span>
+<span class="comment">%    pinfty   -  face-vertex structure for detector</span>
+csca = scattering( sol, <span class="string">'pinfty'</span>, pinfty );
+<span class="comment">%  optical force in pN and torque in pN&times;nm</span>
+[ f, n ] = optforce( sol );
+<span class="comment">%  re-use auxiliary data for multiple calls</span>
+[ f, n, data ] = optforce( sol );
+[ f, n ] = optforce( sol. data );
+</pre>
+<p>Multipole solutions can be also rotated and translated.</p>
+<pre class="codeinput">
+<span class="comment">%  rotate multipole solution SOL</span>
+<span class="comment">%    rot      -  rotation matrix of size 3&times;3 or 3&times;3&times;n</span>
+<span class="comment">%   'same'    -  dimensions of multipole solution match n, rotate each solution separately</span>
+sol = rotate( sol, rot );
+sol = rotate( sol, rot, <span class="string">'same'</span>, 1 );
+
+<span class="comment">%  translate origin for multipoles</span>
+<span class="comment">%    shift    -  shift vector for multipole translation of size 3&times;3 or 3&times;3&times;n</span>
+<span class="comment">%   'same'    -  dimensions of multipole solution match n, rotate each solution separately</span>
+sol = translate( sol, shift );
+sol = translate( sol, shift, <span class="string">'same'</span>, 1 );
+
+<span class="comment">%  add up different multipole solutions with possibly different origins</span>
+<span class="comment">%    solvec     -  vector of multipole.solution objects</span>
+<span class="comment">%    shift      -  origins of multipole coordinate system</span>
+sol = union( solvec, shift );
+</pre>
+<h2 id="5">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demomulti02')">demomulti02.m</a> <tt>-</tt> T-matrices for TiO2 nanodisk and multiple wavelengths.</li>
+</ul>
+</div>
+<p>Copyright 2024 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% multipole.solution
+%
+% _multipole.solution_ stores the multipole solution and allows for various
+% kinds of post-processing.
+%
+%% Initialization
+%
+% The T-matrix solution is initialized with
+
+%  Initialize T-matrix solution
+%    lmax     -  maximal degree for multipole expansion
+%    mat      -  material properties of embedding medium
+%    k0       -  wavenumber of light in vacuum
+%    a        -  TM scattering coefficients
+%    b        -  TE scattering coefficients
+%    ai       -  TM incoming coefficients
+%    bi       -  TE incoming coefficients    
+sol = multipole.solution( lmax, mat, k0, a, b, ai, bi );
+
+%%
+% Alternatively, one can initialize the object with fewer variables and add
+% them later to the object.
+
+%  Initialize T-matrix solution
+sol = multipole.solution( lmax, mat, k0 );
+sol.a = a;
+sol.b = b;
+
+%% Methods
+
+%  electromagnetic multipole fields in embedding medium
+%    pos    -  positions where fields are evaluated
+[ e, h ] = fields( sol, pos );
+%  electromagnetic far-fields
+%    dir    -  propagation directions for far-fields
+%    shift  -  shift origin of multipole expansion
+[ e, h ] = farfields( sol, dir );
+[ e, h ] = farfields( sol, dir, 'shift', shift );
+%  scattering and extinction power, cext is divided by incoming power
+csca = scattering( sol );
+cext = extinction( sol );    
+%  scattering power for user-defined detector
+%    pinfty   -  face-vertex structure for detector
+csca = scattering( sol, 'pinfty', pinfty );
+%  optical force in pN and torque in pN×nm
+[ f, n ] = optforce( sol );
+%  re-use auxiliary data for multiple calls
+[ f, n, data ] = optforce( sol );
+[ f, n ] = optforce( sol. data );
+
+%%
+% Multipole solutions can be also rotated and translated.
+
+%  rotate multipole solution SOL
+%    rot      -  rotation matrix of size 3×3 or 3×3×n
+%   'same'    -  dimensions of multipole solution match n, rotate each solution separately
+sol = rotate( sol, rot );
+sol = rotate( sol, rot, 'same', 1 );
+
+%  translate origin for multipoles
+%    shift    -  shift vector for multipole translation of size 3×3 or 3×3×n
+%   'same'    -  dimensions of multipole solution match n, rotate each solution separately
+sol = translate( sol, shift );
+sol = translate( sol, shift, 'same', 1 );
+
+%  add up different multipole solutions with possibly different origins
+%    solvec     -  vector of multipole.solution objects
+%    shift      -  origins of multipole coordinate system
+sol = union( solvec, shift );
+
+%% Examples
+%
+% * <matlab:edit('demomulti02') demomulti02.m> |-| T-matrices for TiO2
+% nanodisk and multiple wavelengths.
+%
+% Copyright 2024 Ulrich Hohenester
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

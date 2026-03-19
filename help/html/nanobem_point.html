@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Point</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_point.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Point</h1>
+<!--introduction-->
+<p>Point is a nanobem object which is used for the evaluation of potentials and fields away from the boundary, as well as for oscillating dipoles.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+<li>
+<a href="#3">iterpoints</a>
+</li>
+<li>
+<a href="#6">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  place positions POS in photonic environment of nanoparticle</span>
+<span class="comment">%    tau    -  vector of boundary elements</span>
+<span class="comment">%    pos    -  point positions</span>
+<span class="comment">%    mat    -  vector of materials</span>
+<span class="comment">%    imat   -  index to material vector</span>
+obj = Point( tau, pos );
+<span class="comment">%  positions POS placed in materials MAT(IMAT)</span>
+obj = Point( mat, imat, pos );
+</pre>
+<h2 id="2">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  points connected to other points PTS ?</span>
+is = connected( obj, pts );
+<span class="comment">%  points connected to boundary elements TAU ?</span>
+is = connected( obj, tau );
+<span class="comment">%  pairwise distance between points and boundary elements TAU</span>
+<span class="comment">%    scaled by bounding box radius of boundary elements</span>
+d = bdist2( obj, tau );
+<span class="comment">%  return only K smallest distances</span>
+<span class="comment">%    IND is index to smallest elements</span>
+[ d, ind ] = bdist2( obj, tau, k );
+</pre>
+<h2 id="3">iterpoints</h2>
+<p>For internal use we also provide the iterpoints class which groups points into bunches of equal materials or maximal size memax.</p>
+<pre class="codeinput">
+<span class="comment">%  group points TAU into bunches of equal material properties</span>
+<span class="comment">%    nu     -  index to selected points</span>
+<span class="comment">%    memax  -  maximal number of points</span>
+iter = iterpoints( tau );
+iter = iterpoints( tau, nu );
+iter = iterpoints( tau, nu, <span class="string">'memax'</span>, memax );
+</pre>
+<p>After initialization iter is a vector where each element has the following propreties</p>
+<pre class="codeinput">
+<span class="comment">%  points</span>
+iter.tau;
+<span class="comment">%  global index wrt TAU object of initialization</span>
+iter.nu;
+<span class="comment">%  material index</span>
+iter.imat;
+</pre>
+<p>The following methods are implemented for iterpoints objects.</p>
+<pre class="codeinput">
+<span class="comment">%  get all point positions</span>
+pos = eval( iter );
+<span class="comment">%  index of points TAU</span>
+ind = indexin( iter, tau );
+<span class="comment">%  total number of points</span>
+n = npts( iter );
+</pre>
+<h2 id="6">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demopoint01')">demopoint01.m</a> <tt>-</tt> Place points in environment of sphere.</li>
+<li>
+<a href="matlab:edit('demopoint02')">demopoint02.m</a> <tt>-</tt> Place points in environment of coupled spheres.</li>
+</ul>
+</div>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Point
+%
+% Point is a nanobem object which is used for the evaluation of potentials
+% and fields away from the boundary, as well as for oscillating dipoles.
+%
+%% Initialization
+
+%  place positions POS in photonic environment of nanoparticle
+%    tau    -  vector of boundary elements
+%    pos    -  point positions
+%    mat    -  vector of materials
+%    imat   -  index to material vector
+obj = Point( tau, pos );
+%  positions POS placed in materials MAT(IMAT)
+obj = Point( mat, imat, pos );
+
+%% Methods
+
+%  points connected to other points PTS ? 
+is = connected( obj, pts );
+%  points connected to boundary elements TAU ?
+is = connected( obj, tau );
+%  pairwise distance between points and boundary elements TAU
+%    scaled by bounding box radius of boundary elements
+d = bdist2( obj, tau );
+%  return only K smallest distances
+%    IND is index to smallest elements
+[ d, ind ] = bdist2( obj, tau, k );
+
+%% iterpoints
+%
+% For internal use we also provide the iterpoints class which groups points
+% into bunches of equal materials or maximal size memax.
+
+%  group points TAU into bunches of equal material properties
+%    nu     -  index to selected points
+%    memax  -  maximal number of points 
+iter = iterpoints( tau );
+iter = iterpoints( tau, nu );
+iter = iterpoints( tau, nu, 'memax', memax );
+
+%%
+% After initialization iter is a vector where each element has the
+% following propreties
+
+%  points
+iter.tau;
+%  global index wrt TAU object of initialization
+iter.nu;
+%  material index
+iter.imat;
+
+%%
+% The following methods are implemented for iterpoints objects.
+
+%  get all point positions
+pos = eval( iter );
+%  index of points TAU 
+ind = indexin( iter, tau );
+%  total number of points
+n = npts( iter );
+
+%% Examples
+%
+% * <matlab:edit('demopoint01') demopoint01.m> |-| Place points in
+% environment of sphere.
+% * <matlab:edit('demopoint02') demopoint02.m> |-| Place points in
+% environment of coupled spheres.
+%
+% Copyright 2022 Ulrich Hohenester
+##### SOURCE END #####
+-->
+</body>
+</html>

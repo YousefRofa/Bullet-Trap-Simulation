@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Getting started</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_ret_start.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Getting started</h1>
+<!--introduction-->
+<p>The BEM approach for the solution of the full Maxwell equations is described in Hohenester, Nano and Quantum Optics (Springer, 2020), chapters 9, 11. In the following we discuss a typical BEM example for a gold nanosphere in water.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Nanoparticle</a>
+</li>
+<li>
+<a href="#4">BEM solver and excitation</a>
+</li>
+<li>
+<a href="#8">Spectrum</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Nanoparticle</h2>
+<p>In a first step we set up the <a href="nanobem_material.html">Material</a> objects, the nanoparticle boundary, and define how the boundary is embedded in its photonic environment.</p>
+<pre class="codeinput">
+<span class="comment">%  material properties for water and gold</span>
+mat1 = Material( 1.33 ^ 2, 1 );
+mat2 = Material( epstable( <span class="string">'gold.dat'</span> ), 1 );
+<span class="comment">%  material vector, the first entry is the embedding medium</span>
+<span class="comment">%    use the same material vector throughout a simulation</span>
+mat = [ mat1, mat2 ];
+<span class="comment">%  nanosphere with 50 nm radius</span>
+diameter = 50;
+p = trisphere( 144, diameter );
+<span class="comment">%  convert to boundary elements with Raviart-Thomas shape functions</span>
+<span class="comment">%    [ 2, 1 ] defines the materials at the particle inside and outside</span>
+tau = BoundaryEdge( mat, p, [ 2, 1 ] )
+</pre>
+<pre>tau =</pre>
+<pre>  1�284 BoundaryEdge array with properties:</pre>
+<pre>    nu
+    val
+    inout
+    verts</pre>
+<p>Once the boundary elements are initialized, the boundary can be displayed using</p>
+<pre class="codeinput">
+<span class="comment">%  plot nanosphere boundary</span>
+plot( tau, <span class="string">'EdgeColor'</span>, <span class="string">'b'</span> );
+</pre>
+<p>
+<img vspace="5" hspace="5" src="../figures/start_ret_sphere1.jpg" alt=""> </p>
+<h2 id="4">BEM solver and excitation</h2>
+<p>We next have to set up the BEM solver and the excitation, here a plane wave excitation.</p>
+<pre class="codeinput">
+<span class="comment">%  initialize BEM solver</span>
+rules = quadboundary.rules( <span class="string">'quad3'</span>, triquad( 1 ) );
+bem = galerkin.bemsolver( tau, <span class="string">'rules'</span>, rules );
+<span class="comment">%  planewave excitation</span>
+exc = galerkin.planewave( [ 1, 0, 0 ], [ 0, 0, 1 ] );
+</pre>
+<p>The integration rules control the accuracy of the BEM approach. In the last line we set up a planewave object with the polarizaion along direction [1,0,0] and the propagation direction along [0,0,1]. In order to solve the BEM equations, we have to specify a wavelength <img src="nanobem_ret_start_eq14606202617661871665.png" alt="$\lambda$" style="width:7px;height:11px;">, compute the inhomogeneities for the plane wave excitation, and solve the BEM equations</p>
+<pre class="codeinput">
+<span class="comment">%  wavelength of light in vacuum</span>
+lambda = 600;
+<span class="comment">%  toolbox internally uses wavenumber of light in vacuum</span>
+k0 = 2 * pi / lambda;
+<span class="comment">%  plane wave excitation</span>
+q = exc( tau, k0 );
+<span class="comment">%  solve BEM equations</span>
+sol = bem \ q
+</pre>
+<pre>sol =</pre>
+<pre>  solution with properties:</pre>
+<pre>    tau: [1�284 BoundaryEdge]
+     k0: 0.0105
+      e: [426�1 double]
+      h: [426�1 double]</pre>
+<p>We can now plot the surface charge associated with the solution vector <tt>sol</tt> using</p>
+<pre class="codeinput">
+<span class="comment">%  surface charge distribution</span>
+sig = surfc( sol );
+<span class="comment">%  plot surface charge distribution</span>
+plot( tau, sig, <span class="string">'EdgeColor'</span>, <span class="string">'b'</span> );
+colormap( redblue );
+</pre>
+<p>
+<img vspace="5" hspace="5" src="../figures/start_ret_sphere2.jpg" alt=""> </p>
+<p>See the help pages for the BEM <a href="nanobem_ret_solution.html">solution</a> of how to plot the electromagnetic fields on the sphere or at some user-defined positions.</p>
+<h2 id="8">Spectrum</h2>
+<p>In order to compute a spectrum for different wavelengths, one has to set up a wavenumber array and loop over the different wavenumbers</p>
+<pre class="codeinput">
+<span class="comment">%  light wavelength in vacuum</span>
+lambda = linspace( 400, 800, 20 );
+k0 = 2 * pi ./ lambda;
+<span class="comment">%  allocate optical cross sections</span>
+[ csca, cext ] = deal( zeros( numel( k0 ), size( exc.pol, 1 ) ) );
+
+<span class="comment">%  loop over wavenumbers</span>
+<span class="keyword">for</span> i = 1 : numel( k0 )
+  <span class="comment">%  solution of BEM equations</span>
+  sol = bem \ exc( tau, k0( i ) );
+
+  <span class="comment">%  scattering and extinction cross sections</span>
+  csca( i, : ) = scattering( exc, sol );
+  cext( i, : ) = extinction( exc, sol );
+<span class="keyword">end</span>
+</pre>
+<p>Once the spectrum has been computed, it can be plotted. For a spherical particle one can also compare the results with <a href="nanobem_ret_mie.html">Mie</a> theory.</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demoretspec01')">demoretspec01.m</a> <tt>-</tt> Optical spectrum for metallic nanosphere using the full Maxwell's equations.</li>
+</ul>
+</div>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Getting started 
+%
+% The BEM approach for the solution of the full Maxwell equations is
+% described in Hohenester, Nano and Quantum Optics (Springer, 2020),
+% chapters 9, 11. In the following we discuss a typical BEM example for a
+% gold nanosphere in water.
+%
+%% Nanoparticle
+%
+% In a first step we set up the <nanobem_material.html Material> objects,
+% the nanoparticle boundary, and define how the boundary is embedded in its
+% photonic environment.
+
+%  material properties for water and gold
+mat1 = Material( 1.33 ^ 2, 1 );
+mat2 = Material( epstable( 'gold.dat' ), 1 );
+%  material vector, the first entry is the embedding medium
+%    use the same material vector throughout a simulation
+mat = [ mat1, mat2 ];
+%  nanosphere with 50 nm radius
+diameter = 50;
+p = trisphere( 144, diameter );
+%  convert to boundary elements with Raviart-Thomas shape functions
+%    [ 2, 1 ] defines the materials at the particle inside and outside
+tau = BoundaryEdge( mat, p, [ 2, 1 ] )
+
+%%
+%  tau = 
+%
+%    1�284 BoundaryEdge array with properties:
+%
+%      nu
+%      val
+%      inout
+%      verts
+%
+% Once the boundary elements are initialized, the boundary can be displayed
+% using 
+
+%  plot nanosphere boundary
+plot( tau, 'EdgeColor', 'b' );
+
+%%
+% <<../figures/start_ret_sphere1.jpg>>
+%
+%% BEM solver and excitation
+%
+% We next have to set up the BEM solver and the excitation, here a plane
+% wave excitation.
+
+%  initialize BEM solver
+rules = quadboundary.rules( 'quad3', triquad( 1 ) );
+bem = galerkin.bemsolver( tau, 'rules', rules );
+%  planewave excitation
+exc = galerkin.planewave( [ 1, 0, 0 ], [ 0, 0, 1 ] );
+
+%% 
+% The integration rules control the accuracy of the BEM approach. In the
+% last line we set up a planewave object with the polarizaion along
+% direction [1,0,0] and the propagation direction along [0,0,1]. In order
+% to solve the BEM equations, we have to specify a wavelength $\lambda$,
+% compute the inhomogeneities for the plane wave excitation, and solve the
+% BEM equations
+
+%  wavelength of light in vacuum
+lambda = 600;
+%  toolbox internally uses wavenumber of light in vacuum
+k0 = 2 * pi / lambda;
+%  plane wave excitation
+q = exc( tau, k0 );
+%  solve BEM equations
+sol = bem \ q
+
+%%
+%  sol = 
+% 
+%    solution with properties:
+% 
+%      tau: [1�284 BoundaryEdge]
+%       k0: 0.0105
+%        e: [426�1 double]
+%        h: [426�1 double]
+%
+% We can now plot the surface charge associated with the solution vector
+% |sol| using
+
+%  surface charge distribution
+sig = surfc( sol );
+%  plot surface charge distribution
+plot( tau, sig, 'EdgeColor', 'b' );
+colormap( redblue );
+
+%%
+% <<../figures/start_ret_sphere2.jpg>>
+%
+% See the help pages for the BEM <nanobem_ret_solution.html solution> of
+% how to plot the electromagnetic fields on the sphere or at some
+% user-defined positions. 
+%
+%% Spectrum
+%
+% In order to compute a spectrum for different wavelengths, one has to set
+% up a wavenumber array and loop over the different wavenumbers
+
+%  light wavelength in vacuum
+lambda = linspace( 400, 800, 20 );
+k0 = 2 * pi ./ lambda;
+%  allocate optical cross sections
+[ csca, cext ] = deal( zeros( numel( k0 ), size( exc.pol, 1 ) ) );
+
+%  loop over wavenumbers
+for i = 1 : numel( k0 )
+  %  solution of BEM equations
+  sol = bem \ exc( tau, k0( i ) );
+
+  %  scattering and extinction cross sections
+  csca( i, : ) = scattering( exc, sol );
+  cext( i, : ) = extinction( exc, sol );
+end
+
+%%
+% Once the spectrum has been computed, it can be plotted. For a spherical
+% particle one can also compare the results with <nanobem_ret_mie.html Mie>
+% theory.
+%
+% * <matlab:edit('demoretspec01') demoretspec01.m> |-| Optical spectrum for
+% metallic nanosphere using the full Maxwell's equations.
+%
+% Copyright 2022 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

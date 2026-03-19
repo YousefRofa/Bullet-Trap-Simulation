@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>stratified.solution</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_stratsol.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>stratified.solution</h1>
+<!--introduction-->
+<p>The solution of the <a href="nanobem_stratbem.html">stratified.bemsolver</a> is a stratified.solution object. This object can be used to compute and plot the fields on and off the boundary, as well as for further processing in the various simulation classes.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+<li>
+<a href="#4">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize solution object for stratified media</span>
+<span class="comment">%    tau    -  vector of boundary elements</span>
+<span class="comment">%    k0     -  wavelength of light in vacuum</span>
+<span class="comment">%    e      -  electric field coefficients</span>
+<span class="comment">%    h      -  magnetic field coefficients</span>
+<span class="comment">%    layer  -  layerstucture for stratified medium</span>
+sol = solution( tau, k0, e, h );
+sol.layer = layer;
+</pre>
+<h2 id="2">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  electromagnetic far fields, PropertyPairs control boundary element integration</span>
+<span class="comment">%    dir    -  propagation direcctions of farfields</span>
+[ e, h ] = farfields( sol, dir, PropertyPairs );
+<span class="comment">%  electromagnetic fields at points PT1</span>
+<span class="comment">%    'green'      -  reflected Green function object</span>
+<span class="comment">%    'refl'       -  compute reflected fields only</span>
+<span class="comment">%    'relcutoff'  -  cutoff for refined integration</span>
+<span class="comment">%    'waitbar'    -  show waitbar during evaluation</span>
+[ e, h ] = fields( sol, pt1, PropertyPairs );
+<span class="comment">%  evaluate tangential fields at centroid positions</span>
+[ e, h ] = interp( sol );
+<span class="comment">%  evaluate fields at boundary inside or outside</span>
+[ e, h ] = interp( sol, <span class="string">'inout'</span>, inout );
+<span class="comment">%  surface charge distribution</span>
+sig = surfc( sol );
+</pre>
+<p>In the field computation we use the tabulated Green functions. The toolbox uses the classes defined in stratified.pot2 which are similar to those of <a href="nanobem_stratpot1.html">stratified.pot1</a>. Interested users are adviced to directly access the Matlab code where more information about the functionality can be found. Note that the field computation is often relatively slow, with runtimes on the order of minutes rather than seconds.</p>
+<h2 id="4">Examples</h2>
+<p>We consider the example of a gold nanosphere situated 5 nm above a glass-air substrate, as previosuly discussed in <a href="nanobem_stratbem.html">stratified.bemsolver</a>.</p>
+<pre class="codeinput">
+<span class="comment">%  materials for glass substrate, air, and gold</span>
+mat1 = Material( 2.25, 1 );
+mat2 = Material( 1, 1 );
+mat3 = Material( epstable( <span class="string">'gold.dat'</span> ), 1 );
+<span class="comment">%  layerstructure</span>
+layer = stratified.layerstructure( [ mat1, mat2 ], 0 );
+<span class="comment">%  nanosphere situated 5 nm above substrate</span>
+p = trisphere( 144, 50 );
+p.verts( :, 3 ) = p.verts( :, 3 ) - min( p.verts( :, 3 ) ) + 5;
+<span class="comment">%  boundary elements with linear shape functions</span>
+tau = BoundaryEdge( [ mat1, mat2, mat3 ], p, [ 3, 2 ] );
+
+<span class="comment">%  set up BEM solver and planewave excitation</span>
+bem = stratified.bemsolver( tau, layer, <span class="string">'waitbar'</span>, 1 );
+exc = stratified.planewave( layer, [ 1, 0, 0 ], [ 0, 0, -1 ] );
+<span class="comment">%  solve BEM equations</span>
+k0 = 2 * pi / 600;
+sol = bem \ exc( tau, k0 );
+</pre>
+<p>In order to compute the electric field map, we define a rectangular grid for the field positions, place the positions in the dielectric environment using the function <a href="matlab:edit('stratified.Point.m')">stratified.Point</a>, and compute the electromagnetic fields.</p>
+<pre class="codeinput">
+<span class="comment">%  positions where field is computed</span>
+x = linspace( - 50, 50,  51 );
+z = linspace( - 50, 100, 71 );
+[ xx, zz ] = ndgrid( x, z );
+pos = [ xx( : ), 0 * xx( : ), zz( : ) ];
+pt = stratified.Point( layer, tau, pos );
+<span class="comment">%  comoute electromagnetic fields</span>
+[ e1, h1 ] = fields( sol, pt );
+[ e2, h2 ] = fields( exc, pt, k0 );
+<span class="comment">%  plot electric field intensity</span>
+ee = reshape( dot( e1 + e2, e1 + e2, 2 ), size( xx ) );
+imagesc( x, z, ee .' );  hold <span class="string">on</span>
+</pre>
+<p>
+<img vspace="5" hspace="5" src="../figures/fieldstrat01.jpg" alt=""> </p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demostratfield01')">demostratfield01.m</a> <tt>-</tt> Electric field for optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demostratfield02')">demostratfield02.m</a> <tt>-</tt> Electric field for optically excited nanodisk.</li>
+<li>
+<a href="matlab:edit('demostratfar01')">demostratfar01.m</a> <tt>-</tt> Electric farfields for optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demostratfar02')">demostratfar02.m</a> <tt>-</tt> Scattering spectra for detector with finite NA.</li>
+</ul>
+</div>
+<p>Copyright 2023 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% stratified.solution
+%
+% The solution of the <nanobem_stratbem.html stratified.bemsolver>
+% is a stratified.solution object. This object can be used to compute and
+% plot the fields on and off the boundary, as well as for further
+% processing in the various simulation classes.
+%
+%% Initialization
+
+%  initialize solution object for stratified media
+%    tau    -  vector of boundary elements
+%    k0     -  wavelength of light in vacuum
+%    e      -  electric field coefficients
+%    h      -  magnetic field coefficients
+%    layer  -  layerstucture for stratified medium
+sol = solution( tau, k0, e, h );
+sol.layer = layer;
+
+%% Methods
+
+%  electromagnetic far fields, PropertyPairs control boundary element integration
+%    dir    -  propagation direcctions of farfields
+[ e, h ] = farfields( sol, dir, PropertyPairs );
+%  electromagnetic fields at points PT1 
+%    'green'      -  reflected Green function object
+%    'refl'       -  compute reflected fields only
+%    'relcutoff'  -  cutoff for refined integration
+%    'waitbar'    -  show waitbar during evaluation
+[ e, h ] = fields( sol, pt1, PropertyPairs );
+%  evaluate tangential fields at centroid positions 
+[ e, h ] = interp( sol );
+%  evaluate fields at boundary inside or outside
+[ e, h ] = interp( sol, 'inout', inout );
+%  surface charge distribution
+sig = surfc( sol );
+
+%%
+% In the field computation we use the tabulated Green functions. The
+% toolbox uses the classes defined in stratified.pot2 which are similar to
+% those of <nanobem_stratpot1.html stratified.pot1>. Interested users are
+% adviced to directly access the Matlab code where more information about
+% the functionality can be found. Note that the field computation is often
+% relatively slow, with runtimes on the order of minutes rather than
+% seconds.
+%
+%% Examples
+%
+% We consider the example of a gold nanosphere situated 5 nm above a
+% glass-air substrate, as previosuly discussed in <nanobem_stratbem.html
+% stratified.bemsolver>.
+
+%  materials for glass substrate, air, and gold
+mat1 = Material( 2.25, 1 );
+mat2 = Material( 1, 1 );
+mat3 = Material( epstable( 'gold.dat' ), 1 );
+%  layerstructure
+layer = stratified.layerstructure( [ mat1, mat2 ], 0 );
+%  nanosphere situated 5 nm above substrate
+p = trisphere( 144, 50 );
+p.verts( :, 3 ) = p.verts( :, 3 ) - min( p.verts( :, 3 ) ) + 5;
+%  boundary elements with linear shape functions
+tau = BoundaryEdge( [ mat1, mat2, mat3 ], p, [ 3, 2 ] );
+
+%  set up BEM solver and planewave excitation
+bem = stratified.bemsolver( tau, layer, 'waitbar', 1 );
+exc = stratified.planewave( layer, [ 1, 0, 0 ], [ 0, 0, -1 ] );
+%  solve BEM equations 
+k0 = 2 * pi / 600;
+sol = bem \ exc( tau, k0 );
+
+%%
+% In order to compute the electric field map, we define a rectangular grid
+% for the field positions, place the positions in the dielectric
+% environment using the function <matlab:edit('stratified.Point.m')
+% stratified.Point>, and compute the electromagnetic fields.
+
+%  positions where field is computed
+x = linspace( - 50, 50,  51 );
+z = linspace( - 50, 100, 71 );
+[ xx, zz ] = ndgrid( x, z );
+pos = [ xx( : ), 0 * xx( : ), zz( : ) ];
+pt = stratified.Point( layer, tau, pos );
+%  comoute electromagnetic fields
+[ e1, h1 ] = fields( sol, pt );
+[ e2, h2 ] = fields( exc, pt, k0 );
+%  plot electric field intensity
+ee = reshape( dot( e1 + e2, e1 + e2, 2 ), size( xx ) );
+imagesc( x, z, ee .' );  hold on
+
+
+%%
+% <<../figures/fieldstrat01.jpg>>
+%
+% * <matlab:edit('demostratfield01') demostratfield01.m> |-| Electric field
+% for optically excited nanosphere.
+% * <matlab:edit('demostratfield02') demostratfield02.m> |-| Electric field
+% for optically excited nanodisk.
+% * <matlab:edit('demostratfar01') demostratfar01.m> |-| Electric farfields
+% for optically excited nanosphere.
+% * <matlab:edit('demostratfar02') demostratfar02.m> |-| Scattering spectra
+% for detector with finite NA.
+%
+% Copyright 2023 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

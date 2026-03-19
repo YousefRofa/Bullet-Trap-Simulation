@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Material</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-26">
+<meta name="DC.source" content="nanobem_material.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Material</h1>
+<!--introduction-->
+<p>Material is a base class of the nanobem toolbox that stores the permittivity and permeability of the material.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#3">Methods</a>
+</li>
+<li>
+<a href="#5">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize material</span>
+<span class="comment">%    eps  -  either constant or function for permittivity in units of vacuum permittivity</span>
+<span class="comment">%    mu   -  either constant or function for permeability in units of vacuum permeability</span>
+<span class="comment">%</span>
+obj = Material( eps, mu );
+
+<span class="comment">%  initialization with constant value</span>
+obj = Material( 2.25, 1 );
+<span class="comment">%  initialization with tabulated values for gold or silver permittivity</span>
+obj = Material( epstable( <span class="string">'gold.dat'</span> ), 1 );
+<span class="comment">%  initialization with Drude dielectric function for 'Au', 'Ag', 'Al'</span>
+obj = Material( epsdrude( <span class="string">'Au'</span> ), 1 );
+</pre>
+<p>It is also possible to supply user-defined dielectric or permeability functions, which internally use units in eV.</p>
+<pre class="codeinput">
+<span class="comment">%  user-defined dielectric function using energies in eV</span>
+[ wp, gamma ] = deal( 10, 0.66 / 10 );
+epsz = @( w ) 1 - wp ^ 2 ./ ( w .* ( w + 1i * gamma ) );
+<span class="comment">%  initialization with user-defined dielectric function</span>
+obj = Material( epsz, 1 );
+</pre>
+<h2 id="3">Methods</h2>
+<pre class="codeinput">eps = obj.eps( k0 );  <span class="comment">%  dielectric function</span>
+mu  = obj.mu(  k0 );  <span class="comment">%  permeability</span>
+n   = obj.n( k0 );    <span class="comment">%  refractive index</span>
+Z   = obj.Z( k0 );    <span class="comment">%  impedance</span>
+k   = obj.k( k0 );    <span class="comment">%  wavenumber</span>
+</pre>
+<p>Here k0 is the wavenumber of light in vacuum.</p>
+<h2 id="5">Examples</h2>
+<pre class="codeinput">
+<span class="comment">%  photon energy (eV)</span>
+ene = 2;
+<span class="comment">%  convert to wavenumbers</span>
+units;
+lambda = eV2nm / ene;
+k0 = 2 * pi / lambda;
+
+<span class="comment">%  initialize material object for gold</span>
+mat = Material( epstable( <span class="string">'gold.dat'</span> ), 1 );
+<span class="comment">%  refractive index</span>
+n = mat.n( k0 )
+</pre>
+<pre>n =</pre>
+<pre>   0.2038 + 3.3054i</pre>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demomaterial01')">demomaterial01.m</a> <tt>-</tt> Plot tabulated and Drude dielectric functions for Ag and Au.</li>
+</ul>
+</div>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Material
+%
+% Material is a base class of the nanobem toolbox that stores the
+% permittivity and permeability of the material.
+%
+%% Initialization
+
+%  initialize material
+%    eps  -  either constant or function for permittivity in units of vacuum permittivity
+%    mu   -  either constant or function for permeability in units of vacuum permeability
+% 
+obj = Material( eps, mu );
+
+%  initialization with constant value
+obj = Material( 2.25, 1 );
+%  initialization with tabulated values for gold or silver permittivity
+obj = Material( epstable( 'gold.dat' ), 1 );
+%  initialization with Drude dielectric function for 'Au', 'Ag', 'Al'
+obj = Material( epsdrude( 'Au' ), 1 );
+
+%% 
+% It is also possible to supply user-defined dielectric or permeability
+% functions, which internally use units in eV.
+
+%  user-defined dielectric function using energies in eV
+[ wp, gamma ] = deal( 10, 0.66 / 10 );
+epsz = @( w ) 1 - wp ^ 2 ./ ( w .* ( w + 1i * gamma ) );
+%  initialization with user-defined dielectric function
+obj = Material( epsz, 1 );
+
+%% Methods
+
+eps = obj.eps( k0 );  %  dielectric function 
+mu  = obj.mu(  k0 );  %  permeability 
+n   = obj.n( k0 );    %  refractive index
+Z   = obj.Z( k0 );    %  impedance
+k   = obj.k( k0 );    %  wavenumber
+
+%%
+% Here k0 is the wavenumber of light in vacuum.
+
+%% Examples
+
+%  photon energy (eV)
+ene = 2;
+%  convert to wavenumbers
+units;
+lambda = eV2nm / ene;
+k0 = 2 * pi / lambda;
+
+%  initialize material object for gold
+mat = Material( epstable( 'gold.dat' ), 1 );
+%  refractive index
+n = mat.n( k0 )
+
+%%
+%  n =
+% 
+%     0.2038 + 3.3054i
+%
+% * <matlab:edit('demomaterial01') demomaterial01.m> |-| Plot tabulated and
+% Drude dielectric functions for Ag and Au.
+% 
+% Copyright 2022 Ulrich Hohenester
+##### SOURCE END #####
+-->
+</body>
+</html>

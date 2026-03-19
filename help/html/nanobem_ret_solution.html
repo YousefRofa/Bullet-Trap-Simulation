@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>galerkin.solution</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_ret_solution.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>galerkin.solution</h1>
+<!--introduction-->
+<p>The solution of the BEM solver is a galerkin.solution object. This object can be used to compute and plot the fields on and off the boundary, as well as for further processing in the various simulation classes.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize solution of BEM equation</span>
+<span class="comment">%    tau  -  vector of boundary elements</span>
+<span class="comment">%    k0   -  wavenumber of light in vacuum</span>
+<span class="comment">%    e    -  tangential electric field coefficients at edges of discretized particle boundary</span>
+<span class="comment">%    h    -  tangential magnetic field coefficients</span>
+sol = galerkin.bemsolver( tau, k0, e, h );
+</pre>
+<h2 id="2">Methods</h2>
+<pre class="codeinput">
+<span class="comment">%  electromagnetic far fields along directions defined by points PT1 on</span>
+<span class="comment">%  unit sphere, PropertyPairs control boundary element integration</span>
+[ e, h ] = farfields( sol, pt1, PropertyPairs );
+<span class="comment">%  electromagnetic fields at points PT1</span>
+<span class="comment">%    'relcutoff'  -  cutoff for refined integration</span>
+<span class="comment">%    'memax'      -  slice integration into bunches of size MEMAX</span>
+<span class="comment">%    'waitbar'    -  show waitbar during evaluation</span>
+[ e, h ] = fields( sol, pt1, PropertyPairs );
+<span class="comment">%  evaluate tangential fields at centroid positions</span>
+[ e, h ] = interp( sol );
+<span class="comment">%  evaluate fields at boundary inside or outside</span>
+[ e, h ] = interp( sol, <span class="string">'inout'</span>, inout );
+<span class="comment">%  surface charge distribution</span>
+sig = surfc( sol );
+</pre>
+<h2 id="3">Examples</h2>
+<p>In the following we discuss the BEM example for a gold nanosphere in water, as discussed in more length in the <a href="nanobem_ret_start.html">Getting started</a> section.</p>
+<pre class="codeinput">
+<span class="comment">%  wavenumber of light in vacuum</span>
+lambda = 600;
+k0 = 2 * pi / lambda;
+<span class="comment">%  plane wave excitation</span>
+q = exc( tau, k0 );
+<span class="comment">%  solve BEM equations</span>
+sol = bem \ q
+</pre>
+<pre>sol =</pre>
+<pre>  solution with properties:</pre>
+<pre>    tau: [1�284 BoundaryEdge]
+     k0: 0.0105
+      e: [426�1 double]
+      h: [426�1 double]</pre>
+<p>We can now plot the surface charge associated with the solution vector <tt>sol</tt> using</p>
+<pre class="codeinput">
+<span class="comment">%  surface charge distribution</span>
+sig = surfc( sol );
+<span class="comment">%  plot surface charge distribution</span>
+plot( tau, sig, <span class="string">'EdgeColor'</span>, <span class="string">'b'</span> );
+colormap( redblue );
+</pre>
+<p>
+<img vspace="5" hspace="5" src="../figures/start_ret_sphere2.jpg" alt=""> </p>
+<pre class="codeinput">
+<span class="comment">%  electromagnetic fields at particle outside</span>
+[ e, h ] = interp( sol, <span class="string">'inout'</span>, 2 );
+<span class="comment">%  coneplot of total electric fields at particle boundary</span>
+plot( tau, <span class="string">'cone'</span>, e, <span class="string">'scale'</span>, 4 )
+</pre>
+<p>
+<img vspace="5" hspace="5" src="../figures/solution_ret_sphere1.jpg" alt=""> </p>
+<p>To compute the fields off the particle we first have to define the positions where the fields should be computed, using a <a href="nanobem_point.html">Point</a> object.</p>
+<pre class="codeinput">
+<span class="comment">%  points where field is computed</span>
+n = 51;
+xx = 0.8 * diameter * linspace( -1, 1, n );
+[ x, y ] = ndgrid( xx );
+pt = Point( tau, [ x( : ), y( : ), 0 * x( : ) ] );
+<span class="comment">%  evaluate fields</span>
+[ e, h ] = fields( sol, pt, <span class="string">'relcutoff'</span>, 2, <span class="string">'waitbar'</span>, 1 );
+
+<span class="comment">%  plot fields</span>
+imagesc( xx, xx, reshape( dot( e, e, 2 ), size( x ) ) .' );
+axis <span class="string">equal</span> <span class="string">tight</span>
+</pre>
+<p>
+<img vspace="5" hspace="5" src="../figures/solution_ret_sphere2.jpg" alt=""> </p>
+<p>In the evaluation of the fields we use an integration <a href="nanobem_quadengine.html">engine</a> for the refined integration between sufficiently close positons and boundary elements. The computation is based on the representation formula (5.37) of Hohenester, Nano and Quantum Optics (Springer, 2020), together with an <a href="nanobem_potbase.html">analytic integration</a> of the singular integrals.</p>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demoretfield01')">demoretfield01.m</a> <tt>-</tt> Electric field of optically excited nanosphere.</li>
+<li>
+<a href="matlab:edit('demoretfield02')">demoretfield02.m</a> <tt>-</tt> Electric field of optically excited coupled nanospheres.</li>
+</ul>
+</div>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% galerkin.solution
+%
+% The solution of the BEM solver is a galerkin.solution object. This object
+% can be used to compute and plot the fields on and off the boundary, as
+% well as for further processing in the various simulation classes.
+%
+%% Initialization
+
+%  initialize solution of BEM equation
+%    tau  -  vector of boundary elements
+%    k0   -  wavenumber of light in vacuum
+%    e    -  tangential electric field coefficients at edges of discretized particle boundary
+%    h    -  tangential magnetic field coefficients
+sol = galerkin.bemsolver( tau, k0, e, h );
+
+%% Methods
+
+%  electromagnetic far fields along directions defined by points PT1 on
+%  unit sphere, PropertyPairs control boundary element integration
+[ e, h ] = farfields( sol, pt1, PropertyPairs );
+%  electromagnetic fields at points PT1 
+%    'relcutoff'  -  cutoff for refined integration
+%    'memax'      -  slice integration into bunches of size MEMAX
+%    'waitbar'    -  show waitbar during evaluation
+[ e, h ] = fields( sol, pt1, PropertyPairs );
+%  evaluate tangential fields at centroid positions 
+[ e, h ] = interp( sol );
+%  evaluate fields at boundary inside or outside
+[ e, h ] = interp( sol, 'inout', inout );
+%  surface charge distribution
+sig = surfc( sol );
+
+%% Examples
+%
+% In the following we discuss the BEM example for a gold nanosphere in
+% water, as discussed in more length in the <nanobem_ret_start.html Getting
+% started> section.
+
+%  wavenumber of light in vacuum
+lambda = 600;
+k0 = 2 * pi / lambda;
+%  plane wave excitation
+q = exc( tau, k0 );
+%  solve BEM equations
+sol = bem \ q
+
+%%
+%  sol = 
+% 
+%    solution with properties:
+% 
+%      tau: [1�284 BoundaryEdge]
+%       k0: 0.0105
+%        e: [426�1 double]
+%        h: [426�1 double]
+%
+% We can now plot the surface charge associated with the solution vector
+% |sol| using
+
+%  surface charge distribution
+sig = surfc( sol );
+%  plot surface charge distribution
+plot( tau, sig, 'EdgeColor', 'b' );
+colormap( redblue );
+
+%%
+% <<../figures/start_ret_sphere2.jpg>>
+
+%  electromagnetic fields at particle outside
+[ e, h ] = interp( sol, 'inout', 2 );
+%  coneplot of total electric fields at particle boundary
+plot( tau, 'cone', e, 'scale', 4 )
+
+%%
+% <<../figures/solution_ret_sphere1.jpg>>
+%
+% To compute the fields off the particle we first have to define the
+% positions where the fields should be computed, using a
+% <nanobem_point.html Point> object.
+
+%  points where field is computed
+n = 51;
+xx = 0.8 * diameter * linspace( -1, 1, n );
+[ x, y ] = ndgrid( xx );
+pt = Point( tau, [ x( : ), y( : ), 0 * x( : ) ] );
+%  evaluate fields
+[ e, h ] = fields( sol, pt, 'relcutoff', 2, 'waitbar', 1 );
+
+%  plot fields
+imagesc( xx, xx, reshape( dot( e, e, 2 ), size( x ) ) .' );
+axis equal tight
+
+%%
+% <<../figures/solution_ret_sphere2.jpg>>
+%
+% In the evaluation of the fields we use an integration
+% <nanobem_quadengine.html engine> for the refined integration between
+% sufficiently close positons and boundary elements. The computation is
+% based on the representation formula (5.37) of Hohenester, Nano and
+% Quantum Optics (Springer, 2020), together with an <nanobem_potbase.html
+% analytic integration> of the singular integrals.
+%
+% * <matlab:edit('demoretfield01') demoretfield01.m> |-| Electric field of
+% optically excited nanosphere.
+% * <matlab:edit('demoretfield02') demoretfield02.m> |-| Electric field of
+% optically excited coupled nanospheres.
+%
+%
+% Copyright 2022 Ulrich Hohenester
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

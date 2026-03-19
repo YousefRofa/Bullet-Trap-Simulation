@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>tweezer.fluidsphere</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_tweezer_fluidsphere.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tweezer.fluidsphere</h1>
+<!--introduction-->
+<p>
+<i>tweezer.fluidsphere</i> accounts for the Stokes drag and diffusion of a sphereical particle in a fluid.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Initialization</a>
+</li>
+<li>
+<a href="#2">Methods</a>
+</li>
+<li>
+<a href="#3">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Initialization</h2>
+<pre class="codeinput">
+<span class="comment">%  initialize Stokes drag and diffusion for sphere in fluid</span>
+<span class="comment">%     diameter    -  diameter of sphere</span>
+<span class="comment">%     vel         -  velocity of fluid in z-direction</span>
+fluid = tweezer.fluidsphere( diameter, vel );
+<span class="comment">%  modify default values for viscosity and temperature</span>
+fluid.eta = eta;      <span class="comment">%  default viscosity is 9.544e-4 Pa&times;s</span>
+fluid.temp = temp;    <span class="comment">%  default temperature is 293 K</span>
+</pre>
+<h2 id="2">Methods</h2>
+<p>Once the <i>tweezer.fluidsphere</i> is initialized, one can use the following methods</p>
+<pre class="codeinput">
+<span class="comment">%  drift velocity for given force</span>
+<span class="comment">%    ftot     -  total force acting on nanoparticle (pN)</span>
+<span class="comment">%    vel      -  drift velocity (nm/s)</span>
+vel = drift( obj, ftot );
+
+<span class="comment">%  diffusion coefficients for spherical particle</span>
+<span class="comment">%    D.t    -  diffusion coefficient for translation (mm^2/s)</span>
+<span class="comment">%    D.r    -  diffusion coefficient for rotation (rad^2/s)</span>
+D = diffusion( fluid );
+
+<span class="comment">%  propagate particle in time using drift and diffusion</span>
+<span class="comment">%    pos      -  initial positions of particle</span>
+<span class="comment">%    ftot     -  total force acting on particle (pN)</span>
+<span class="comment">%    dt       -  time increment</span>
+pos = browniant( fluid, pos, ftot, dt );
+
+<span class="comment">%  propagate particle in space using drift and diffusion</span>
+<span class="comment">%    pos      -  initial positions of particle</span>
+<span class="comment">%    ftot     -  total force acting on particle (pN)</span>
+<span class="comment">%    dz       -  space increment</span>
+<span class="comment">%    dt       -  time increment</span>
+[ pos, dt ] = brownianz( fluid, pos, ftot, dz );
+</pre>
+<h2 id="3">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demotweezer01')">demotweezer01.m</a> <tt>-</tt> Tweezer simulation for spherical particle.</li>
+<li>
+<a href="matlab:edit('demotrapsph01')">demotrapsph01.m</a> <tt>-</tt> Trapping position for spherical walkers in OF2i setup.</li>
+<li>
+<a href="matlab:edit('demowalkersph01')">demowalkersph01.m</a> <tt>-</tt> Propagate spherical walkers in OF2i setup.</li>
+</ul>
+</div>
+<p>Copyright 2025 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% tweezer.fluidsphere
+%
+% _tweezer.fluidsphere_ accounts for the Stokes drag and diffusion of
+% a sphereical particle in a fluid.
+%
+%% Initialization
+
+%  initialize Stokes drag and diffusion for sphere in fluid
+%     diameter    -  diameter of sphere
+%     vel         -  velocity of fluid in z-direction
+fluid = tweezer.fluidsphere( diameter, vel );
+%  modify default values for viscosity and temperature
+fluid.eta = eta;      %  default viscosity is 9.544e-4 Pa×s
+fluid.temp = temp;    %  default temperature is 293 K
+
+%% Methods
+%
+% Once the _tweezer.fluidsphere_ is initialized, one can use the following
+% methods
+
+%  drift velocity for given force
+%    ftot     -  total force acting on nanoparticle (pN)
+%    vel      -  drift velocity (nm/s)
+vel = drift( obj, ftot );
+
+%  diffusion coefficients for spherical particle
+%    D.t    -  diffusion coefficient for translation (mm^2/s)
+%    D.r    -  diffusion coefficient for rotation (rad^2/s)
+D = diffusion( fluid );
+
+%  propagate particle in time using drift and diffusion
+%    pos      -  initial positions of particle
+%    ftot     -  total force acting on particle (pN)
+%    dt       -  time increment
+pos = browniant( fluid, pos, ftot, dt );
+
+%  propagate particle in space using drift and diffusion
+%    pos      -  initial positions of particle
+%    ftot     -  total force acting on particle (pN)
+%    dz       -  space increment
+%    dt       -  time increment
+[ pos, dt ] = brownianz( fluid, pos, ftot, dz );
+
+%% Examples
+%
+% * <matlab:edit('demotweezer01') demotweezer01.m> |-| Tweezer simulation for spherical particle.
+% * <matlab:edit('demotrapsph01') demotrapsph01.m> |-| Trapping position for spherical walkers in OF2i setup.
+% * <matlab:edit('demowalkersph01') demowalkersph01.m> |-| Propagate spherical walkers in OF2i setup.
+%
+% Copyright 2025 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>

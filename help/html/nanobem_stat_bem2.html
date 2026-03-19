@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Working principle</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_stat_bem2.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Working principle</h1>
+<!--introduction-->
+<p>The evaluation of the Green function and its normal derivative is needed for the quasistatic BEM approach, and is performed using an integration <a href="nanobem_quadengine.html">engine</a>.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Integration engine</a>
+</li>
+<li>
+<a href="#4">std</a>
+</li>
+<li>
+<a href="#6">refine</a>
+</li>
+<li>
+<a href="#8">duffy</a>
+</li>
+<li>
+<a href="#10">smooth</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Integration engine</h2>
+<p>When calling galerkinstat.bemsolver without further specification, the BEM solver uses the <a href="matlab:edit('galerkinstat.pot1.engine')">default engine</a>.</p>
+<pre class="codeinput">
+<span class="comment">%  default engine for BEM solver</span>
+engine = galerkinstat.pot1.engine( PropertyPairs );
+</pre>
+<p>Alternatively one could also set up an engine such as</p>
+<pre class="codeinput">engine( 1 ) = galerkinstat.pot1.std( PropertyPairs );
+engine( 2 ) = galerkinstat.pot1.refine( PropertyPairs );
+engine( 3 ) = galerkinstat.pot1.duffy( PropertyPairs );
+<span class="comment">%  pass engine to BEM solver</span>
+bem = galerkinstat.bemsolver( tau, <span class="string">'engine'</span>, engine );
+</pre>
+<p>In the following we describe the various engine components in more detail.</p>
+<h2 id="4">std</h2>
+<p>Default integrator for all pairs of boundary elements.</p>
+<pre class="codeinput">
+<span class="comment">%  initialization of default integrator for all pairs of boundary elements</span>
+obj = galerkinstat.pot1.std( PropertyPairs );
+</pre>
+<div>
+<ul>
+<li>
+<b>'rules'</b> quadrature <a href="matlab:edit('quadboundary.rules')">rules</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">%  apply quadrature rules to boundary elements TAU1 and TAU2</span>
+obj = set1( obj, tau1, tau2 );
+<span class="comment">%  evaluate Green function data.G and normal derivative data.F</span>
+data = eval2( obj );
+</pre>
+<h2 id="6">refine</h2>
+<p>Refinement integrator for selected pairs of boundary elements.</p>
+<pre class="codeinput">
+<span class="comment">%  initialize refined integration</span>
+obj = galerkinstat.pot1.refine( PropertyPairs );
+</pre>
+<div>
+<ul>
+<li>
+<b>'rules1'</b> quadrature <a href="matlab:edit('quadboundary.rules')">rules</a> for refined integration</li>
+<li>
+<b>'relcutoff'</b> relative cutoff for refined integration, see <a href="matlab:doc('BoundaryElement/bdist2')">bdist2</a>
+</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">%  apply quadrature rules to boundary elements TAU1 and TAU2</span>
+obj = set1( obj, tau1, tau2 );
+<span class="comment">%  evaluate Green function data.G and normal derivative data.F</span>
+<span class="comment">%    overwrite previously computed elements</span>
+data = eval2( obj, data );
+</pre>
+<h2 id="8">duffy</h2>
+<p>Refinement integrator for identical or touching pairs of boundary elements using a Duffy transformation.</p>
+<pre class="codeinput">
+<span class="comment">%  initialize refined Duffy integration</span>
+obj = galerkinstat.pot1.duffy1( PropertyPairs );
+</pre>
+<div>
+<ul>
+<li>
+<b>'nduffy'</b> number of Legendre-Gauss points for Duffy integration</li>
+</ul>
+</div>
+<pre class="codeinput">
+<span class="comment">%  apply quadrature rules to boundary elements TAU1 and TAU2</span>
+obj = set1( obj, tau1, tau2 );
+<span class="comment">%  evaluate Green function data.G and normal derivative data.F</span>
+<span class="comment">%    overwrite previously computed elements</span>
+data = eval2( obj,  data );
+</pre>
+<h2 id="10">smooth</h2>
+<p>Refinement integrator for selected pairs of boundary elements using analytic integration.</p>
+<pre class="codeinput">
+<span class="comment">%  initialize analytic integration</span>
+obj = galerkinstat.pot1.smooth( PropertyPairs );
+</pre>
+<div>
+<ul>
+<li>
+<b>'rules1'</b> quadrature <a href="matlab:edit('quadboundary.rules')">rules</a> for refined integration</li>
+<li>
+<b>'relcutoff'</b> relative cutoff for refined integration, see <a href="matlab:doc('BoundaryElement/bdist2')">bdist2</a>
+</li>
+</ul>
+</div>
+<p>For details of the analytic integration see the <a href="nanobem_potbase.html">potbase</a> documentation.</p>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Working principle
+%
+% The evaluation of the Green function and its normal derivative is needed
+% for the quasistatic BEM approach, and is performed using an integration
+% <nanobem_quadengine.html engine>.
+
+%% Integration engine 
+%
+% When calling galerkinstat.bemsolver without further specification, the
+% BEM solver uses the <matlab:edit('galerkinstat.pot1.engine') default
+% engine>.
+
+%  default engine for BEM solver
+engine = galerkinstat.pot1.engine( PropertyPairs );
+
+%%
+% Alternatively one could also set up an engine such as
+engine( 1 ) = galerkinstat.pot1.std( PropertyPairs );
+engine( 2 ) = galerkinstat.pot1.refine( PropertyPairs );
+engine( 3 ) = galerkinstat.pot1.duffy( PropertyPairs ); 
+%  pass engine to BEM solver
+bem = galerkinstat.bemsolver( tau, 'engine', engine );
+
+%%
+% In the following we describe the various engine components in more
+% detail. 
+
+%% std
+%
+% Default integrator for all pairs of boundary elements.
+
+%  initialization of default integrator for all pairs of boundary elements
+obj = galerkinstat.pot1.std( PropertyPairs );
+
+%%
+% * *'rules'* quadrature <matlab:edit('quadboundary.rules') rules>
+
+%  apply quadrature rules to boundary elements TAU1 and TAU2
+obj = set1( obj, tau1, tau2 );
+%  evaluate Green function data.G and normal derivative data.F
+data = eval2( obj );
+
+%% refine
+%
+% Refinement integrator for selected pairs of boundary elements.
+
+%  initialize refined integration 
+obj = galerkinstat.pot1.refine( PropertyPairs );
+
+%%
+% * *'rules1'* quadrature <matlab:edit('quadboundary.rules') rules> for
+% refined integration
+% * *'relcutoff'* relative cutoff for refined integration, see
+% <matlab:doc('BoundaryElement/bdist2') bdist2>
+
+%  apply quadrature rules to boundary elements TAU1 and TAU2
+obj = set1( obj, tau1, tau2 );
+%  evaluate Green function data.G and normal derivative data.F
+%    overwrite previously computed elements 
+data = eval2( obj, data );
+
+%% duffy
+%
+% Refinement integrator for identical or touching pairs of boundary
+% elements using a Duffy transformation.
+
+%  initialize refined Duffy integration
+obj = galerkinstat.pot1.duffy1( PropertyPairs );
+
+%%
+% * *'nduffy'* number of Legendre-Gauss points for Duffy integration
+
+%  apply quadrature rules to boundary elements TAU1 and TAU2
+obj = set1( obj, tau1, tau2 );
+%  evaluate Green function data.G and normal derivative data.F
+%    overwrite previously computed elements 
+data = eval2( obj,  data );
+
+%% smooth
+%
+% Refinement integrator for selected pairs of boundary elements using
+% analytic integration.
+
+%  initialize analytic integration 
+obj = galerkinstat.pot1.smooth( PropertyPairs );
+
+%%
+% * *'rules1'* quadrature <matlab:edit('quadboundary.rules') rules> for
+% refined integration
+% * *'relcutoff'* relative cutoff for refined integration, see
+% <matlab:doc('BoundaryElement/bdist2') bdist2>
+%
+% For details of the analytic integration see the <nanobem_potbase.html
+% potbase> documentation.
+%
+%
+% Copyright 2022 Ulrich Hohenester
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

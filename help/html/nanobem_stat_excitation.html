@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>User-defined excitation</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_stat_excitation.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>User-defined excitation</h1>
+<!--introduction-->
+<p>Setting up your own excitation or excitation class is relatively simple within the nanobem toolbox. Here we briefly discuss how to compute the inhomogeneities qinc for the quasistatic BEM approach.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Working principle</a>
+</li>
+<li>
+<a href="#5">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Working principle</h2>
+<p>To set up the structure that can be passed to a <a href="nanobem_stat_bem.html">galerkinstat.bemsolver</a> object one has to set up the struture qinc for the inhomogeneities of the external excitation.</p>
+<pre class="codeinput">
+<span class="comment">%  inhomogeneity of normal potential derivative</span>
+<span class="comment">%    tau      -  discretized particle boundary</span>
+<span class="comment">%    fun      -  user-defined function fun(pt), for details see below</span>
+<span class="comment">%   'rules'   -  quadrature rules for boundary element integration</span>
+vn = qbasis( tau, fun, PropertyNames );
+<span class="comment">%  set output</span>
+<span class="comment">%    k0       -  wavenumber of light in vacuum</span>
+qinc = struct( <span class="string">'vn'</span>, vn, <span class="string">'tau'</span>, tau, <span class="string">'k0'</span>, k0 );
+</pre>
+<p>The user-defined function fun receives a <a href="nanobem_quadboundary.html">quadboundary</a> object pt and must return the electric field.</p>
+<pre class="codeinput">
+<span class="comment">%  user-defined function</span>
+e = fun( pt );
+<span class="comment">%  display quadboundary object PT</span>
+pt
+</pre>
+<pre>pt =</pre>
+<pre>  quadboundary with properties:</pre>
+<pre>      tau: [1&times;284 BoundaryVert]
+     quad: [1&times;1 struct]
+    npoly: 3
+      mat: [1&times;2 Material]
+    inout: [2 1]</pre>
+<p>The integration points provided by pt are grouped such that there is always a single unique material index at the particle inside or outside. The integration points where the electromagnetic fields have to be evaluated are obtained through</p>
+<pre class="codeinput">
+<span class="comment">%  evaluate electromagnetic fields at positions POS</span>
+pos = eval( pt );
+</pre>
+<p>pos(npos,nq,3) is an array where the first index runs over the different boundary elements, the second index over the quadrature points, and the last one over the Cartesian coordinates.</p>
+<h2 id="5">Examples</h2>
+<p>Inhomogeneity for planewave excitation with polarization vector [1,0,0].</p>
+<pre class="codeinput">
+<span class="comment">%  electric field for planewave excitation</span>
+fun = @( pt ) repmat(  <span class="keyword">...</span>
+  reshape( [ 1, 0, 0 ], 1, 1, 3 ), numel( pt.tau ), numel( pt.quad.w ), 1 );
+<span class="comment">%  normal derivative of incoming potential</span>
+vn = qbasis( tau, fun );
+<span class="comment">%  set output</span>
+qinc = struct( <span class="string">'vn'</span>, vn, <span class="string">'tau'</span>, tau, <span class="string">'k0'</span>, k0 );
+</pre>
+<p>Copyright 2022 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% User-defined excitation
+%
+% Setting up your own excitation or excitation class is relatively simple
+% within the nanobem toolbox. Here we briefly discuss how to compute the
+% inhomogeneities qinc for the quasistatic BEM approach.
+%
+%% Working principle
+%
+% To set up the structure that can be passed to a <nanobem_stat_bem.html
+% galerkinstat.bemsolver> object one has to set up the struture qinc for the
+% inhomogeneities of the external excitation.
+
+%  inhomogeneity of normal potential derivative
+%    tau      -  discretized particle boundary
+%    fun      -  user-defined function fun(pt), for details see below
+%   'rules'   -  quadrature rules for boundary element integration
+vn = qbasis( tau, fun, PropertyNames );
+%  set output
+%    k0       -  wavenumber of light in vacuum
+qinc = struct( 'vn', vn, 'tau', tau, 'k0', k0 );
+
+%%
+% The user-defined function fun receives a <nanobem_quadboundary.html
+% quadboundary> object pt and must return the electric field.
+
+%  user-defined function
+e = fun( pt );
+%  display quadboundary object PT
+pt
+
+%%
+%  pt = 
+% 
+%    quadboundary with properties:
+% 
+%        tau: [1×284 BoundaryVert]
+%       quad: [1×1 struct]
+%      npoly: 3
+%        mat: [1×2 Material]
+%      inout: [2 1]
+%
+% The integration points provided by pt are grouped such that there is
+% always a single unique material index at the particle inside or outside.
+% The integration points where the electromagnetic fields have to be
+% evaluated are obtained through
+
+%  evaluate electromagnetic fields at positions POS
+pos = eval( pt );
+
+%%
+% pos(npos,nq,3) is an array where the first index runs over the different
+% boundary elements, the second index over the quadrature points, and the
+% last one over the Cartesian coordinates.
+%
+%% Examples
+%
+% Inhomogeneity for planewave excitation with polarization vector [1,0,0].
+
+%  electric field for planewave excitation
+fun = @( pt ) repmat(  ...
+  reshape( [ 1, 0, 0 ], 1, 1, 3 ), numel( pt.tau ), numel( pt.quad.w ), 1 );
+%  normal derivative of incoming potential
+vn = qbasis( tau, fun );
+%  set output
+qinc = struct( 'vn', vn, 'tau', tau, 'k0', k0 );
+
+%%
+%
+% Copyright 2022 Ulrich Hohenester 
+
+##### SOURCE END #####
+-->
+</body>
+</html>

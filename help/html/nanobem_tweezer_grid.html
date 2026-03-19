@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>tweezer.griddedScatterer</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-10-27">
+<meta name="DC.source" content="nanobem_tweezer_grid.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>tweezer.griddedScatterer</h1>
+<!--introduction-->
+<p>For spherical scatterers one can set up a force grid for the fast evaluation of optical forces for many walkers, typically up to a million. A similar class exists for scatterers with cylinder symmetry, which, however, is significantly slower.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">tweezer.griddedScattererSphere</a>
+</li>
+<li>
+<a href="#3">tweezer.griddedScattererPol</a>
+</li>
+<li>
+<a href="#5">Examples</a>
+</li>
+</ul>
+</div>
+<h2 id="1">tweezer.griddedScattererSphere</h2>
+<p>The grid for optical forces is set up with</p>
+<pre class="codeinput">
+<span class="comment">%  initialize optical force grid for spherical scatterer</span>
+<span class="comment">%    scatterer    -  optical force evaluator for particle</span>
+<span class="comment">%    r            -  grid of radii</span>
+<span class="comment">%    z            -  single z-value (optional) or grid thereof</span>
+<span class="comment">%    lmax         -  maximal order for azimuthal Fourier expansion</span>
+grid = tweezer.griddedScsttererSphere( scatterer, r, z, <span class="string">'lmax'</span>, lmax );
+</pre>
+<p>We perform a Fourier transform in the azimuthal direction for the gridded data, where <i>lmax</i> controls the maximal order. After initialization, the grid object can be used similarly to the <i>multipole.scatterer</i> object and can be directly passed to the functions of the <i>tweezer.walkersphere</i> class. For simulations with propagation in the z-direction using the functions <i>propagatez</i> and <i>brownianz</i> one typically uses only a single z-value in the initialization or omits the value.</p>
+<p>Once the <i>tweezer.griddedScattererSphere</i> object is initialized, the optical force can be computed with</p>
+<pre class="codeinput">
+<span class="comment">%  evaluate grid for given propagation distance (optional)</span>
+<span class="comment">%    z    -  single propagation distance where forces are evaluated</span>
+grid = eval( grid, z );
+<span class="comment">%  optical force for many walker positions</span>
+<span class="comment">%    pos    -  positiosn where force is requested</span>
+f = optforce( grid, pos );
+</pre>
+<h2 id="3">tweezer.griddedScattererPol</h2>
+<p>Same as <i>tweezer.griddedScattererSphere</i> but for scatterers with cylinder symmetry. For the azimuthal direction of the grid we perform a Fourier transform that is controlled by <i>lmax(1)</i>. For the orientation of the scatterer we perform a spherical-harmonics transformation that is controlled by <i>lmax(2)</i>. Alternatively one can also pass a single <i>lmax</i> value.</p>
+<pre class="codeinput">
+<span class="comment">%  initialize optical force grid for scatterer with cylinder symmetry</span>
+<span class="comment">%    scatterer    -  optical force evaluator for particle</span>
+<span class="comment">%    r            -  grid of radii</span>
+<span class="comment">%    z            -  single z-value (optional) or grid thereof</span>
+<span class="comment">%    lmax         -  maximal order for azimuthal Fourier and multipole expansion</span>
+grid = tweezer.griddedScsttererPol( scatterer, r, z, <span class="string">'lmax'</span>, lmax );
+</pre>
+<p>Once the <i>tweezer.griddedScattererPol</i> object is initialized, the optical force and torque can be computed with</p>
+<pre class="codeinput">
+<span class="comment">%  evaluate grid for given propagation distance (optional)</span>
+<span class="comment">%    z    -  single propagation distance where forces are evaluated</span>
+grid = eval( grid, z );
+<span class="comment">%  optical force for many walker positions</span>
+<span class="comment">%    pos    -  positiosn where force is requested</span>
+<span class="comment">%    rot    -  corresponding rotation matrices</span>
+[ f, n ] = optforce( grid, pos, rot );
+</pre>
+<h2 id="5">Examples</h2>
+<div>
+<ul>
+<li>
+<a href="matlab:edit('demowalkersph04')">demowalkersph04.m</a> <tt>-</tt> Histogram for Brownian motion and spheres.</li>
+<li>
+<a href="matlab:edit('demowalkerpol05')">demowalkerpol05.m</a> <tt>-</tt> Histogram for Brownian motion and ellipsoids.</li>
+</ul>
+</div>
+<p>Copyright 2025 Ulrich Hohenester</p>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% tweezer.griddedScatterer
+%
+% For spherical scatterers one can set up a force grid for the fast
+% evaluation of optical forces for many walkers, typically up to a million.
+% A similar class exists for scatterers with cylinder symmetry, which,
+% however, is significantly slower.
+%
+%% tweezer.griddedScattererSphere
+% 
+% The grid for optical forces is set up with
+
+%  initialize optical force grid for spherical scatterer
+%    scatterer    -  optical force evaluator for particle
+%    r            -  grid of radii
+%    z            -  single z-value (optional) or grid thereof
+%    lmax         -  maximal order for azimuthal Fourier expansion  
+grid = tweezer.griddedScsttererSphere( scatterer, r, z, 'lmax', lmax );
+
+%%
+% We perform a Fourier transform in the azimuthal direction for the gridded
+% data, where _lmax_ controls the maximal order. After initialization, the
+% grid object can be used similarly to the _multipole.scatterer_ object and
+% can be directly passed to the functions of the _tweezer.walkersphere_
+% class. For simulations with propagation in the z-direction using the
+% functions _propagatez_ and _brownianz_ one typically uses only a single
+% z-value in the initialization or omits the value.
+%
+% Once the _tweezer.griddedScattererSphere_ object is initialized, the
+% optical force can be computed with
+
+%  evaluate grid for given propagation distance (optional)
+%    z    -  single propagation distance where forces are evaluated
+grid = eval( grid, z );
+%  optical force for many walker positions
+%    pos    -  positiosn where force is requested
+f = optforce( grid, pos );
+
+%% tweezer.griddedScattererPol
+%
+% Same as _tweezer.griddedScattererSphere_ but for scatterers with cylinder
+% symmetry. For the azimuthal direction of the grid we perform a Fourier
+% transform that is controlled by _lmax(1)_. For the orientation of the
+% scatterer we perform a spherical-harmonics transformation that is
+% controlled by _lmax(2)_. Alternatively one can also pass a single _lmax_
+% value.
+
+%  initialize optical force grid for scatterer with cylinder symmetry
+%    scatterer    -  optical force evaluator for particle
+%    r            -  grid of radii
+%    z            -  single z-value (optional) or grid thereof
+%    lmax         -  maximal order for azimuthal Fourier and multipole expansion  
+grid = tweezer.griddedScsttererPol( scatterer, r, z, 'lmax', lmax );
+
+%%
+% Once the _tweezer.griddedScattererPol_ object is initialized, the optical
+% force and torque can be computed with
+
+%  evaluate grid for given propagation distance (optional)
+%    z    -  single propagation distance where forces are evaluated
+grid = eval( grid, z );
+%  optical force for many walker positions
+%    pos    -  positiosn where force is requested
+%    rot    -  corresponding rotation matrices
+[ f, n ] = optforce( grid, pos, rot );
+
+%% Examples
+%
+% * <matlab:edit('demowalkersph04') demowalkersph04.m> |-| Histogram for Brownian motion and spheres.
+% * <matlab:edit('demowalkerpol05') demowalkerpol05.m> |-| Histogram for Brownian motion and ellipsoids.
+%
+% Copyright 2025 Ulrich Hohenester
+
+##### SOURCE END #####
+-->
+</body>
+</html>
